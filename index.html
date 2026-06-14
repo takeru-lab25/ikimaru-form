@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>いきまる 海あそび 参加申込</title>
+<style>
+:root{--green:#06C755;--line:#e3e3e3;--muted:#888;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#222;background:#fafafa;}
+header{background:var(--green);color:#fff;padding:12px 16px;font-size:16px;font-weight:600;}
+main{max-width:480px;margin:0 auto;padding:16px;}
+h1{font-size:17px;margin:4px 0 2px;}
+.hint{font-size:12px;color:var(--muted);margin:0 0 16px;}
+label.f{display:block;font-size:13px;color:#555;margin:14px 0 4px;font-weight:600;}
+input,select{width:100%;height:42px;padding:0 12px;font-size:16px;border:1px solid var(--line);border-radius:8px;background:#fff;}
+.chip{display:inline-block;background:#e6f1fb;color:#185fa5;font-size:11px;padding:2px 8px;border-radius:6px;margin-left:6px;}
+.opt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:11px 12px;margin-bottom:8px;font-size:15px;background:#fff;}
+.opt input{width:20px;height:20px;}
+.agree{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:13px;margin:8px 0 18px;}
+.agree input{width:20px;height:20px;margin-top:1px;}
+.sub{font-size:12px;color:var(--muted);margin:2px 0 0;}
+button.send{width:100%;height:50px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;}
+.sec{border-top:8px solid #f0f0f0;margin:18px -16px 0;padding:14px 16px 0;}
+.done{text-align:center;padding:40px 16px;}
+.req{color:#c0392b;}
+a{color:#185fa5;}
+</style>
+</head>
+<body>
+<header>いきまる</header>
+<main id="app">
+  <h1>海あそび 参加申込</h1>
+  <p class="hint">LINEのプロフィールから一部自動入力しています。1枚で申込が完了します。</p>
+
+  <div class="sec" style="border-top:none;margin-top:0;padding-top:0">
+    <label class="f">お子さまのお名前 <span class="req">*</span></label>
+    <input type="text" id="child1" placeholder="例）山田 太郎">
+    <label class="f">学年 <span class="req">*</span></label>
+    <select id="grade1"><option value="">選択してください</option><option>年中</option><option>年長</option><option>小1</option><option>小2</option><option>小3</option><option>小4</option><option>小5</option><option>小6</option><option>その他</option></select>
+    <label class="f">2人目のお子さま（いれば）</label>
+    <input type="text" id="child2" placeholder="お名前（任意）">
+    <select id="grade2" style="margin-top:8px"><option value="">学年（任意）</option><option>年中</option><option>年長</option><option>小1</option><option>小2</option><option>小3</option><option>小4</option><option>小5</option><option>小6</option><option>その他</option></select>
+  </div>
+
+  <div class="sec">
+    <label class="f">保護者のお名前 <span class="chip">LINEから自動</span></label>
+    <input type="text" id="guardian" placeholder="保護者名">
+    <label class="f">当日つながる電話番号 <span class="req">*</span></label>
+    <input type="tel" id="phone" placeholder="090-0000-0000">
+  </div>
+
+  <div class="sec">
+    <label class="f">緊急連絡先 <span class="req">*</span></label>
+    <input type="text" id="emgName" placeholder="お名前">
+    <input type="text" id="emgRel" placeholder="続柄（例：父・母・祖母）" style="margin-top:8px">
+    <input type="tel" id="emgPhone" placeholder="電話番号" style="margin-top:8px">
+  </div>
+
+  <div class="sec">
+    <label class="f">参加希望日 <span class="req">*</span></label>
+    <div id="dates"></div>
+  </div>
+
+  <div class="sec">
+    <label class="opt" style="margin-top:4px"><input type="checkbox" id="meet"> 集合・解散の場所と時間を確認しました</label>
+    <label class="opt"><input type="checkbox" id="photo" checked> 活動中の写真・動画の掲載に同意します（Instagram・HP等）</label>
+    <p class="sub">※掲載を希望されない方は、上のチェックを外してください。</p>
+  </div>
+
+  <div class="sec">
+    <label class="agree"><input type="checkbox" id="agree"><span>利用規約・参加同意（免責）・キャンセル/中止ポリシー・個人情報の取扱いに同意します　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
+    <button class="send" id="send">送信する</button>
+    <p class="sub" style="text-align:center;margin-top:10px">参加費は当日現金。2回目以降はお名前と希望日だけでOK。</p>
+  </div>
+</main>
+
+<div class="done" id="done" style="display:none">
+  <div style="font-size:48px">🌊</div>
+  <h1>お申込みありがとうございます！</h1>
+  <p class="hint">LINEのトークに確認をお送りします。<br>前日にあらためてご連絡しますね。</p>
+</div>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script>
+var LIFF_ID = "2010388432-T1i0hg4p";
+var GAS_URL  = "https://script.google.com/macros/s/AKfycbxhdv3tqF0KVpxERk8PY9FipD08WWyGBY2tmZdq8CKdPuuXWKbxtXIZzAYH-wJy4x8lbA/exec";
+var EVENTS = [
+  { value:"7/1（火）海あそび①", label:"7/1（火）海あそび①" },
+  { value:"8/1（金）海あそび②", label:"8/1（金）海あそび②" }
+];
+var profile = { userId:"", displayName:"", idToken:"" };
+
+function rd(){
+  var b = document.getElementById("dates");
+  EVENTS.forEach(function(ev){
+    var l = document.createElement("label");
+    l.className = "opt";
+    l.innerHTML = '<input type="checkbox" class="date" value="'+ev.value+'"> '+ev.label;
+    b.appendChild(l);
+  });
+}
+
+function init(){
+  rd();
+  if (typeof liff === "undefined" || LIFF_ID.indexOf("PUT_") === 0) { return; }
+  liff.init({ liffId: LIFF_ID }).then(function(){
+    if (!liff.isLoggedIn()) { liff.login(); return; }
+    return liff.getProfile().then(function(p){
+      profile.userId = p.userId;
+      profile.displayName = p.displayName || "";
+      try { profile.idToken = liff.getIDToken() || ""; } catch(e){}
+      var g = document.getElementById("guardian");
+      if (!g.value) { g.value = profile.displayName; }
+    });
+  }).catch(function(e){});
+}
+
+function submit(){
+  var c1 = document.getElementById("child1").value.trim();
+  var g1 = document.getElementById("grade1").value;
+  var ph = document.getElementById("phone").value.trim();
+  var en = document.getElementById("emgName").value.trim();
+  var ep = document.getElementById("emgPhone").value.trim();
+  var ds = [].slice.call(document.querySelectorAll(".date:checked")).map(function(c){return c.value;});
+  if (!c1 || !g1 || !ph || !en || !ep) { alert("必須項目（お名前・学年・電話・緊急連絡先）をご入力ください"); return; }
+  if (ds.length === 0) { alert("参加希望日を1つ以上選んでください"); return; }
+  if (!document.getElementById("meet").checked) { alert("集合・解散の確認にチェックをお願いします"); return; }
+  if (!document.getElementById("agree").checked) { alert("規約への同意にチェックをお願いします"); return; }
+
+  var pl = {
+    timestamp: new Date().toISOString(),
+    userId: profile.userId, displayName: profile.displayName, idToken: profile.idToken,
+    guardian: document.getElementById("guardian").value.trim(), phone: ph,
+    emgName: en, emgRel: document.getElementById("emgRel").value.trim(), emgPhone: ep,
+    child1: c1, grade1: g1,
+    child2: document.getElementById("child2").value.trim(), grade2: document.getElementById("grade2").value,
+    dates: ds.join(" / "), meet: true,
+    photo: document.getElementById("photo").checked ? "OK" : "NG", agree: true
+  };
+
+  var b = document.getElementById("send");
+  b.disabled = true; b.textContent = "送信中…";
+  fetch(GAS_URL, { method:"POST", mode:"no-cors", body: JSON.stringify(pl) })
+    .then(function(){
+      document.getElementById("app").style.display = "none";
+      document.getElementById("done").style.display = "block";
+      setTimeout(function(){ try{ if(liff && liff.isInClient()) liff.closeWindow(); }catch(e){} }, 2500);
+    })
+    .catch(function(){ b.disabled = false; b.textContent = "送信する"; alert("送信に失敗しました。もう一度お試しください。"); });
+}
+
+document.getElementById("send").addEventListener("click", submit);
+init();
+</script>
+</body>
+</html>
