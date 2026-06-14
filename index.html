@@ -5,80 +5,155 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>いきまる 海あそび 参加申込</title>
 <style>
-:root{--green:#06C755;--line:#e3e3e3;--muted:#888;}
-*{box-sizing:border-box;}
-body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#222;background:#fafafa;}
-header{background:var(--green);color:#fff;padding:12px 16px;font-size:16px;font-weight:600;}
-main{max-width:480px;margin:0 auto;padding:16px;}
-h1{font-size:17px;margin:4px 0 2px;}
-.hint{font-size:12px;color:var(--muted);margin:0 0 16px;}
-label.f{display:block;font-size:13px;color:#555;margin:14px 0 4px;font-weight:600;}
-input,select{width:100%;height:42px;padding:0 12px;font-size:16px;border:1px solid var(--line);border-radius:8px;background:#fff;}
-.chip{display:inline-block;background:#e6f1fb;color:#185fa5;font-size:11px;padding:2px 8px;border-radius:6px;margin-left:6px;}
-.opt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:11px 12px;margin-bottom:8px;font-size:15px;background:#fff;}
-.opt input{width:20px;height:20px;}
-.agree{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:13px;margin:8px 0 18px;}
-.agree input{width:20px;height:20px;margin-top:1px;}
-.sub{font-size:12px;color:var(--muted);margin:2px 0 0;}
-button.send{width:100%;height:50px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;}
-.sec{border-top:8px solid #f0f0f0;margin:18px -16px 0;padding:14px 16px 0;}
-.done{text-align:center;padding:40px 16px;}
-.req{color:#c0392b;}
-a{color:#185fa5;}
+:root{
+  --sky:#41c4e8; --deep:#0a89c4; --teal:#1fbfb0; --ink:#1f2d3d; --muted:#7b8a9a;
+  --line:#e6ecf1; --card:#ffffff; --sand:#fff8ef; --coral:#ff7a4d; --coral2:#ff5a8a;
+  --ok:#1fbfb0;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);background:#f3f8fb;}
+.wrap{max-width:480px;margin:0 auto;background:#f3f8fb;min-height:100vh;}
+
+/* hero */
+.hero{position:relative;background:linear-gradient(135deg,var(--sky),var(--teal) 60%,var(--deep));color:#fff;padding:26px 20px 46px;overflow:hidden;}
+.hero .sun{position:absolute;top:-26px;right:-26px;width:120px;height:120px;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);border-radius:50%;}
+.hero h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.02em;}
+.hero p{margin:8px 0 0;font-size:13px;opacity:.95;line-height:1.7;}
+.hero .badge{display:inline-block;margin-top:12px;background:rgba(255,255,255,.22);backdrop-filter:blur(4px);font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;}
+.wave{display:block;margin-top:-1px;}
+
+/* body */
+main{padding:0 16px 28px;margin-top:-22px;position:relative;z-index:2;}
+.card{background:var(--card);border-radius:18px;padding:16px 16px 18px;margin-bottom:14px;box-shadow:0 6px 22px rgba(20,90,130,.07);}
+.card h2{display:flex;align-items:center;gap:8px;font-size:15px;margin:0 0 12px;font-weight:800;}
+.card h2 .em{font-size:18px;}
+label.f{display:block;font-size:12.5px;color:var(--muted);margin:12px 0 5px;font-weight:700;}
+label.f:first-of-type{margin-top:0;}
+.req{color:var(--coral2);font-weight:800;margin-left:2px;}
+input,select{width:100%;height:48px;padding:0 14px;font-size:16px;border:1.5px solid var(--line);border-radius:12px;background:#fbfdff;color:var(--ink);transition:border-color .15s,box-shadow .15s;}
+input:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(31,191,176,.15);background:#fff;}
+input::placeholder{color:#b8c4cf;}
+
+/* children rows */
+.childrow{background:var(--sand);border-radius:14px;padding:12px;margin-bottom:10px;position:relative;border:1px solid #ffe9d6;}
+.childrow .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.childrow .head span{font-size:12.5px;font-weight:800;color:#e8853f;}
+.childrow .rm{border:none;background:#ffd9c4;color:#d2641f;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;}
+.addchild{width:100%;height:46px;border:1.6px dashed var(--teal);background:rgba(31,191,176,.06);color:var(--deep);font-size:14px;font-weight:800;border-radius:12px;}
+.addchild:disabled{opacity:.4;border-style:solid;}
+
+/* date cards */
+.dnote{font-size:12px;color:var(--muted);margin:-2px 0 10px;font-weight:700;}
+.datecard{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;cursor:pointer;background:#fbfdff;transition:all .15s;}
+.datecard .tick{width:24px;height:24px;border-radius:50%;border:2px solid #cdd8e1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex:0 0 auto;transition:all .15s;}
+.datecard .txt{font-size:15px;font-weight:700;}
+.datecard .sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:1px;}
+.datecard.sel{border-color:var(--teal);background:rgba(31,191,176,.08);box-shadow:0 0 0 2px rgba(31,191,176,.12);}
+.datecard.sel .tick{background:var(--teal);border-color:var(--teal);}
+
+/* toggles */
+.toggle{display:flex;align-items:center;gap:12px;padding:6px 0;}
+.toggle .sw{width:48px;height:28px;border-radius:999px;background:#d6dee5;position:relative;flex:0 0 auto;transition:background .2s;}
+.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s;}
+.toggle.on .sw{background:var(--teal);}
+.toggle.on .sw::after{left:23px;}
+.toggle .lab{font-size:14px;font-weight:700;}
+.toggle .lab small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px;}
+.check{display:flex;align-items:flex-start;gap:11px;background:#fbfdff;border:1.5px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;}
+.check .box{width:24px;height:24px;border-radius:7px;border:2px solid #cdd8e1;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;transition:all .15s;}
+.check.on{border-color:var(--teal);background:rgba(31,191,176,.07);}
+.check.on .box{background:var(--teal);border-color:var(--teal);}
+.check .t{font-size:13px;line-height:1.6;font-weight:600;}
+.check a{color:var(--deep);font-weight:800;}
+
+/* submit */
+.foot{padding:4px 16px 30px;}
+.send{width:100%;height:56px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--coral),var(--coral2));color:#fff;font-size:17px;font-weight:800;box-shadow:0 8px 20px rgba(255,90,138,.32);transition:transform .1s,opacity .2s;}
+.send:active{transform:scale(.985);}
+.send:disabled{opacity:.6;}
+.fine{text-align:center;font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7;font-weight:600;}
+
+/* done */
+.done{display:none;text-align:center;padding:70px 24px;}
+.done .big{font-size:60px;}
+.done h1{font-size:22px;margin:14px 0 8px;font-weight:800;}
+.done p{font-size:14px;color:var(--muted);line-height:1.8;}
 </style>
 </head>
 <body>
-<header>いきまる</header>
-<main id="app">
-  <h1>海あそび 参加申込</h1>
-  <p class="hint">LINEのプロフィールから一部自動入力しています。1枚で申込が完了します。</p>
+<div class="wrap">
 
-  <div class="sec" style="border-top:none;margin-top:0;padding-top:0">
-    <label class="f">お子さまのお名前 <span class="req">*</span></label>
-    <input type="text" id="child1" placeholder="例）山田 太郎">
-    <label class="f">学年 <span class="req">*</span></label>
-    <select id="grade1"><option value="">選択してください</option><option>年中</option><option>年長</option><option>小1</option><option>小2</option><option>小3</option><option>小4</option><option>小5</option><option>小6</option><option>その他</option></select>
-    <label class="f">2人目のお子さま（いれば）</label>
-    <input type="text" id="child2" placeholder="お名前（任意）">
-    <select id="grade2" style="margin-top:8px"><option value="">学年（任意）</option><option>年中</option><option>年長</option><option>小1</option><option>小2</option><option>小3</option><option>小4</option><option>小5</option><option>小6</option><option>その他</option></select>
+<div id="app">
+  <div class="hero">
+    <div class="sun"></div>
+    <h1>🌊 海あそび 参加申込</h1>
+    <p>夏の海で、子どもたちが“いま”に夢中になる時間を。<br>かんたん入力、1分で完了します！</p>
+    <span class="badge">☀️ 鎌倉・材木座海岸</span>
   </div>
+  <svg class="wave" viewBox="0 0 480 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:24px;margin-top:-24px"><path d="M0,12 C80,24 160,0 240,10 C320,20 400,4 480,12 L480,24 L0,24 Z" fill="#f3f8fb"/></svg>
 
-  <div class="sec">
-    <label class="f">保護者のお名前 <span class="chip">LINEから自動</span></label>
-    <input type="text" id="guardian" placeholder="保護者名">
-    <label class="f">当日つながる電話番号 <span class="req">*</span></label>
-    <input type="tel" id="phone" placeholder="090-0000-0000">
+  <main>
+    <!-- 子ども -->
+    <div class="card">
+      <h2><span class="em">🧒</span>参加するお子さま</h2>
+      <div id="children"></div>
+      <button type="button" class="addchild" id="addChild">＋ お子さまを追加（最大4名）</button>
+    </div>
+
+    <!-- 保護者 -->
+    <div class="card">
+      <h2><span class="em">👪</span>保護者・連絡先</h2>
+      <label class="f">保護者のお名前 <span class="req">*</span></label>
+      <input type="text" id="guardian" placeholder="例）山田 花子">
+      <label class="f">当日つながる電話番号 <span class="req">*</span></label>
+      <input type="tel" id="phone" placeholder="090-0000-0000">
+    </div>
+
+    <!-- 緊急連絡先 -->
+    <div class="card">
+      <h2><span class="em">🆘</span>緊急連絡先</h2>
+      <label class="f">お名前 <span class="req">*</span></label>
+      <input type="text" id="emgName" placeholder="例）山田 太郎">
+      <div class="grid2" style="margin-top:8px">
+        <input type="text" id="emgRel" placeholder="続柄（父・母 等）">
+        <input type="tel" id="emgPhone" placeholder="電話番号">
+      </div>
+    </div>
+
+    <!-- 参加希望日 -->
+    <div class="card">
+      <h2><span class="em">📅</span>参加したい日</h2>
+      <p class="dnote">✅ 複数えらべます！来られる日を全部タップ</p>
+      <div id="dates"></div>
+    </div>
+
+    <!-- 確認・同意 -->
+    <div class="card">
+      <h2><span class="em">📸</span>確認ごと</h2>
+      <div class="toggle on" id="photoTog">
+        <div class="sw"></div>
+        <div class="lab">活動中の写真・動画の掲載にOK<small>Instagram・HP等。希望されない方はオフにしてください</small></div>
+      </div>
+      <div style="height:10px"></div>
+      <label class="check" id="meetChk"><span class="box"></span><span class="t">集合・解散の場所と時間を確認しました</span></label>
+      <div style="height:10px"></div>
+      <label class="check" id="agreeChk"><span class="box"></span><span class="t">利用規約・参加同意（免責）・キャンセル/中止・個人情報の取扱いに同意します　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
+    </div>
+  </main>
+
+  <div class="foot">
+    <button class="send" id="send">この内容で申し込む 🙌</button>
+    <p class="fine">参加費は当日現金（1,500円／日）。<br>2回目以降も、この画面からかんたんに申込めます。</p>
   </div>
+</div>
 
-  <div class="sec">
-    <label class="f">緊急連絡先 <span class="req">*</span></label>
-    <input type="text" id="emgName" placeholder="お名前">
-    <input type="text" id="emgRel" placeholder="続柄（例：父・母・祖母）" style="margin-top:8px">
-    <input type="tel" id="emgPhone" placeholder="電話番号" style="margin-top:8px">
-  </div>
+<div class="done" id="done">
+  <div class="big">🌊🎉</div>
+  <h1>お申込みありがとう！</h1>
+  <p>受付しました。<br>LINEのトークに確認をお送りします。<br>当日が楽しみですね、海で会いましょう！☀️</p>
+</div>
 
-  <div class="sec">
-    <label class="f">参加希望日 <span class="req">*</span></label>
-    <div id="dates"></div>
-  </div>
-
-  <div class="sec">
-    <label class="opt" style="margin-top:4px"><input type="checkbox" id="meet"> 集合・解散の場所と時間を確認しました</label>
-    <label class="opt"><input type="checkbox" id="photo" checked> 活動中の写真・動画の掲載に同意します（Instagram・HP等）</label>
-    <p class="sub">※掲載を希望されない方は、上のチェックを外してください。</p>
-  </div>
-
-  <div class="sec">
-    <label class="agree"><input type="checkbox" id="agree"><span>利用規約・参加同意（免責）・キャンセル/中止ポリシー・個人情報の取扱いに同意します　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
-    <button class="send" id="send">送信する</button>
-    <p class="sub" style="text-align:center;margin-top:10px">参加費は当日現金。2回目以降はお名前と希望日だけでOK。</p>
-  </div>
-</main>
-
-<div class="done" id="done" style="display:none">
-  <div style="font-size:48px">🌊</div>
-  <h1>お申込みありがとうございます！</h1>
-  <p class="hint">LINEのトークに確認をお送りします。<br>前日にあらためてご連絡しますね。</p>
 </div>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -86,71 +161,109 @@ a{color:#185fa5;}
 var LIFF_ID = "2010388432-T1i0hg4p";
 var GAS_URL  = "https://script.google.com/macros/s/AKfycbxhdv3tqF0KVpxERk8PY9FipD08WWyGBY2tmZdq8CKdPuuXWKbxtXIZzAYH-wJy4x8lbA/exec";
 var EVENTS = [
-  { value:"7/1（火）海あそび①", label:"7/1（火）海あそび①" },
-  { value:"8/1（金）海あそび②", label:"8/1（金）海あそび②" }
+  { value:"7/1（火）海あそび①", label:"7/1（火）", sub:"海あそび①" },
+  { value:"8/1（金）海あそび②", label:"8/1（金）", sub:"海あそび②" }
 ];
-var profile = { userId:"", displayName:"", idToken:"" };
+var GRADES = ["年中","年長","小1","小2","小3","小4","小5","小6","その他"];
+var MAX_CHILD = 4;
+var profile = { userId:"", displayName:"" };
 
-function rd(){
+/* ---- children ---- */
+function gradeOpts(){ return '<option value="">学年</option>'+GRADES.map(function(g){return '<option>'+g+'</option>';}).join(''); }
+function childCount(){ return document.querySelectorAll("#children .childrow").length; }
+function refreshChildUI(){
+  var n = childCount();
+  document.querySelectorAll("#children .childrow").forEach(function(r,i){
+    r.querySelector(".idx").textContent = (i+1)+"人目";
+    var rm = r.querySelector(".rm");
+    rm.style.display = (n>1) ? "" : "none";
+  });
+  document.getElementById("addChild").disabled = (n>=MAX_CHILD);
+}
+function addChild(){
+  if (childCount()>=MAX_CHILD) return;
+  var div = document.createElement("div");
+  div.className = "childrow";
+  div.innerHTML =
+    '<div class="head"><span class="idx"></span><button type="button" class="rm">削除</button></div>'+
+    '<input type="text" class="cname" placeholder="お名前">'+
+    '<div class="grid2" style="margin-top:8px"><div></div>'+
+    '<select class="cgrade">'+gradeOpts()+'</select></div>';
+  div.querySelector(".grid2").style.gridTemplateColumns = "1fr 1fr";
+  div.querySelector(".rm").addEventListener("click",function(){ div.remove(); refreshChildUI(); });
+  document.getElementById("children").appendChild(div);
+  refreshChildUI();
+}
+
+/* ---- dates ---- */
+function renderDates(){
   var b = document.getElementById("dates");
   EVENTS.forEach(function(ev){
-    var l = document.createElement("label");
-    l.className = "opt";
-    l.innerHTML = '<input type="checkbox" class="date" value="'+ev.value+'"> '+ev.label;
-    b.appendChild(l);
+    var d = document.createElement("div");
+    d.className = "datecard"; d.dataset.value = ev.value;
+    d.innerHTML = '<div class="tick">✓</div><div><div class="txt">'+ev.label+'</div><div class="sub">'+ev.sub+'</div></div>';
+    d.addEventListener("click",function(){ d.classList.toggle("sel"); });
+    b.appendChild(d);
   });
 }
 
+/* ---- toggles ---- */
+function bindToggle(id){ var e=document.getElementById(id); e.addEventListener("click",function(){ e.classList.toggle("on"); }); }
+
 function init(){
-  rd();
-  if (typeof liff === "undefined" || LIFF_ID.indexOf("PUT_") === 0) { return; }
-  liff.init({ liffId: LIFF_ID }).then(function(){
-    if (!liff.isLoggedIn()) { liff.login(); return; }
-    return liff.getProfile().then(function(p){
-      profile.userId = p.userId;
-      profile.displayName = p.displayName || "";
-      try { profile.idToken = liff.getIDToken() || ""; } catch(e){}
-      var g = document.getElementById("guardian");
-      if (!g.value) { g.value = profile.displayName; }
-    });
+  addChild(); renderDates();
+  bindToggle("meetChk"); bindToggle("agreeChk");
+  document.getElementById("photoTog").addEventListener("click",function(){ this.classList.toggle("on"); });
+  document.getElementById("addChild").addEventListener("click",addChild);
+  document.getElementById("send").addEventListener("click",submit);
+
+  if (typeof liff==="undefined" || LIFF_ID.indexOf("PUT_")===0) return;
+  liff.init({liffId:LIFF_ID}).then(function(){
+    if(!liff.isLoggedIn()){ liff.login(); return; }
+    return liff.getProfile().then(function(p){ profile.userId=p.userId; profile.displayName=p.displayName||""; });
   }).catch(function(e){});
 }
 
 function submit(){
-  var c1 = document.getElementById("child1").value.trim();
-  var g1 = document.getElementById("grade1").value;
+  var kids = [];
+  var bad = false;
+  document.querySelectorAll("#children .childrow").forEach(function(r){
+    var nm = r.querySelector(".cname").value.trim();
+    var gr = r.querySelector(".cgrade").value;
+    if(nm){ kids.push(nm + (gr ? "（"+gr+"）" : "")); }
+  });
+  var gu = document.getElementById("guardian").value.trim();
   var ph = document.getElementById("phone").value.trim();
   var en = document.getElementById("emgName").value.trim();
   var ep = document.getElementById("emgPhone").value.trim();
-  var ds = [].slice.call(document.querySelectorAll(".date:checked")).map(function(c){return c.value;});
-  if (!c1 || !g1 || !ph || !en || !ep) { alert("必須項目（お名前・学年・電話・緊急連絡先）をご入力ください"); return; }
-  if (ds.length === 0) { alert("参加希望日を1つ以上選んでください"); return; }
-  if (!document.getElementById("meet").checked) { alert("集合・解散の確認にチェックをお願いします"); return; }
-  if (!document.getElementById("agree").checked) { alert("規約への同意にチェックをお願いします"); return; }
+  var dates = [].slice.call(document.querySelectorAll(".datecard.sel")).map(function(d){return d.dataset.value;});
+
+  if(kids.length===0){ alert("お子さまのお名前を1名以上ご入力ください"); return; }
+  if(!gu||!ph){ alert("保護者のお名前・電話番号をご入力ください"); return; }
+  if(!en||!ep){ alert("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
+  if(dates.length===0){ alert("参加したい日を1つ以上えらんでください"); return; }
+  if(!document.getElementById("meetChk").classList.contains("on")){ alert("集合・解散の確認にチェックをお願いします"); return; }
+  if(!document.getElementById("agreeChk").classList.contains("on")){ alert("規約への同意をお願いします"); return; }
 
   var pl = {
-    timestamp: new Date().toISOString(),
-    userId: profile.userId, displayName: profile.displayName, idToken: profile.idToken,
-    guardian: document.getElementById("guardian").value.trim(), phone: ph,
-    emgName: en, emgRel: document.getElementById("emgRel").value.trim(), emgPhone: ep,
-    child1: c1, grade1: g1,
-    child2: document.getElementById("child2").value.trim(), grade2: document.getElementById("grade2").value,
-    dates: ds.join(" / "), meet: true,
-    photo: document.getElementById("photo").checked ? "OK" : "NG", agree: true
+    timestamp:new Date().toISOString(),
+    userId:profile.userId, displayName:profile.displayName,
+    guardian:gu, phone:ph, emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
+    children: kids.join(" / "), childCount: kids.length,
+    dates:dates.join(" / "), meet:true,
+    photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG",
+    agree:true
   };
 
-  var b = document.getElementById("send");
-  b.disabled = true; b.textContent = "送信中…";
-  fetch(GAS_URL, { method:"POST", mode:"no-cors", body: JSON.stringify(pl) })
-    .then(function(){
-      document.getElementById("app").style.display = "none";
-      document.getElementById("done").style.display = "block";
-      setTimeout(function(){ try{ if(liff && liff.isInClient()) liff.closeWindow(); }catch(e){} }, 2500);
-    })
-    .catch(function(){ b.disabled = false; b.textContent = "送信する"; alert("送信に失敗しました。もう一度お試しください。"); });
+  var b=document.getElementById("send"); b.disabled=true; b.textContent="送信中…";
+  fetch(GAS_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(pl)}).then(function(){
+    document.getElementById("app").style.display="none";
+    document.getElementById("done").style.display="block";
+    window.scrollTo(0,0);
+    setTimeout(function(){ try{ if(liff&&liff.isInClient()) liff.closeWindow(); }catch(e){} },2800);
+  }).catch(function(){ b.disabled=false; b.textContent="この内容で申し込む 🙌"; alert("送信に失敗しました。もう一度お試しください。"); });
 }
 
-document.getElementById("send").addEventListener("click", submit);
 init();
 </script>
 </body>
