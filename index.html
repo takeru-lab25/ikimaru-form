@@ -15,7 +15,7 @@ body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",
 .wrap{max-width:480px;margin:0 auto;min-height:100vh;}
 
 /* header */
-.hd{position:relative;background:linear-gradient(155deg,#103241,#0e6d7c 95%);color:#fff;padding:24px 22px 40px;}
+.hd{position:relative;background:linear-gradient(155deg,#103241,#0e6d7c 95%);color:#fff;padding:24px 22px 34px;}
 .brand{font-size:13px;letter-spacing:.18em;font-weight:700;opacity:.9;}
 .brand-rule{width:26px;height:2px;background:rgba(255,255,255,.55);margin:9px 0 14px;}
 .hd h1{margin:0;font-size:21px;font-weight:800;letter-spacing:.01em;}
@@ -65,9 +65,11 @@ input::placeholder{color:#b6c2cb;}
 .toggle .lab small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px;}
 .check{display:flex;align-items:flex-start;gap:11px;border:1.5px solid var(--line);border-radius:10px;padding:13px;cursor:pointer;background:#fcfdfe;}
 .check .box{width:23px;height:23px;border-radius:6px;border:2px solid #c5d2d9;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:all .14s;}
-.check.on{border-color:var(--teal);}
+.check.on{border-color:var(--teal);background:var(--aqua);}
 .check.on .box{background:var(--teal);border-color:var(--teal);}
+.check.on .box::after{content:"\2713";font-weight:800;line-height:1;}
 .check .t{font-size:12.5px;line-height:1.65;font-weight:600;}
+.check .t small{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:3px;line-height:1.55;}
 .check a{color:var(--teal-d);font-weight:800;text-decoration:underline;}
 
 /* submit */
@@ -91,13 +93,7 @@ input::placeholder{color:#b6c2cb;}
   <header class="hd">
     <div class="brand">いきまる</div>
     <div class="brand-rule"></div>
-    <h1>海あそび 参加申込</h1>
-    <p class="lead">鎌倉・材木座海岸で開催する、子どものための海あそびプログラム。下記フォームよりお申込みください。</p>
-    <div class="trust">
-      <span><b>対象</b> 5歳〜</span>
-      <span><b>定員</b> 20名</span>
-      <span><b>少人数制</b>で安全に配慮</span>
-    </div>
+    <h1>海あそび 参加申込み</h1>
   </header>
   <svg class="wv" viewBox="0 0 480 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,11 C90,22 170,2 250,9 C330,16 410,4 480,11 L480,22 L0,22 Z" fill="#f4f7f8"/></svg>
 
@@ -136,11 +132,8 @@ input::placeholder{color:#b6c2cb;}
 
     <div class="card">
       <div class="sec-h"><span class="n">05</span><h2>ご確認・同意事項</h2></div>
-      <div class="toggle on" id="photoTog">
-        <div class="sw"></div>
-        <div class="lab">活動中の写真・動画の掲載に同意します<small>活動記録・広報（Instagram／ウェブサイト等）に使用します。ご希望されない場合はオフにしてください。</small></div>
-      </div>
-      <div style="height:12px"></div>
+      <label class="check on" id="photoTog"><span class="box"></span><span class="t">活動中の写真・動画の掲載に同意します（撮影許可）<small>活動記録・広報（Instagram／ウェブサイト等）に使用します。希望されない場合はチェックを外してください。</small></span></label>
+      <div style="height:10px"></div>
       <label class="check" id="meetChk"><span class="box"></span><span class="t">集合・解散の場所と時間を確認しました。</span></label>
       <div style="height:10px"></div>
       <label class="check" id="agreeChk"><span class="box"></span><span class="t">利用規約・参加同意（免責）・キャンセル／中止ポリシー・個人情報の取扱いに同意します。　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
