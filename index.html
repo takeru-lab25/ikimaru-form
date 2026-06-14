@@ -3,117 +3,124 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>いきまる 海あそび 参加申込</title>
+<title>いきまる｜海あそび 参加申込</title>
 <style>
 :root{
-  --sky:#41c4e8; --deep:#0a89c4; --teal:#1fbfb0; --ink:#1f2d3d; --muted:#7b8a9a;
-  --line:#e6ecf1; --card:#ffffff; --sand:#fff8ef; --coral:#ff7a4d; --coral2:#ff5a8a;
-  --ok:#1fbfb0;
+  --ink:#102a37; --ink2:#436173; --muted:#8497a3;
+  --teal:#0e8d9c; --teal-d:#0b6f7e; --aqua:#eef6f7;
+  --line:#e3ebee; --bg:#f4f7f8; --card:#ffffff; --warn:#c9603f;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);background:#f3f8fb;}
-.wrap{max-width:480px;margin:0 auto;background:#f3f8fb;min-height:100vh;}
+body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;}
+.wrap{max-width:480px;margin:0 auto;min-height:100vh;}
 
-/* hero */
-.hero{position:relative;background:linear-gradient(135deg,var(--sky),var(--teal) 60%,var(--deep));color:#fff;padding:26px 20px 46px;overflow:hidden;}
-.hero .sun{position:absolute;top:-26px;right:-26px;width:120px;height:120px;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);border-radius:50%;}
-.hero h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.02em;}
-.hero p{margin:8px 0 0;font-size:13px;opacity:.95;line-height:1.7;}
-.hero .badge{display:inline-block;margin-top:12px;background:rgba(255,255,255,.22);backdrop-filter:blur(4px);font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;}
-.wave{display:block;margin-top:-1px;}
+/* header */
+.hd{position:relative;background:linear-gradient(155deg,#103241,#0e6d7c 95%);color:#fff;padding:24px 22px 40px;}
+.brand{font-size:12px;letter-spacing:.32em;font-weight:700;opacity:.85;text-transform:uppercase;}
+.brand-rule{width:26px;height:2px;background:rgba(255,255,255,.55);margin:9px 0 14px;}
+.hd h1{margin:0;font-size:21px;font-weight:800;letter-spacing:.01em;}
+.hd .lead{margin:9px 0 0;font-size:13px;line-height:1.7;opacity:.92;}
+.trust{margin-top:16px;padding-top:13px;border-top:1px solid rgba(255,255,255,.18);font-size:11.5px;line-height:1.6;opacity:.9;display:flex;flex-wrap:wrap;gap:4px 14px;}
+.trust b{font-weight:700;opacity:1;}
+.wv{display:block;width:100%;height:22px;margin-top:-22px;position:relative;z-index:1;}
 
 /* body */
-main{padding:0 16px 28px;margin-top:-22px;position:relative;z-index:2;}
-.card{background:var(--card);border-radius:18px;padding:16px 16px 18px;margin-bottom:14px;box-shadow:0 6px 22px rgba(20,90,130,.07);}
-.card h2{display:flex;align-items:center;gap:8px;font-size:15px;margin:0 0 12px;font-weight:800;}
-.card h2 .em{font-size:18px;}
-label.f{display:block;font-size:12.5px;color:var(--muted);margin:12px 0 5px;font-weight:700;}
-label.f:first-of-type{margin-top:0;}
-.req{color:var(--coral2);font-weight:800;margin-left:2px;}
-input,select{width:100%;height:48px;padding:0 14px;font-size:16px;border:1.5px solid var(--line);border-radius:12px;background:#fbfdff;color:var(--ink);transition:border-color .15s,box-shadow .15s;}
-input:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(31,191,176,.15);background:#fff;}
-input::placeholder{color:#b8c4cf;}
+main{padding:0 16px 24px;margin-top:-20px;position:relative;z-index:2;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:13px;box-shadow:0 2px 10px rgba(16,42,55,.04);}
+.sec-h{display:flex;align-items:center;gap:11px;margin:0 0 4px;}
+.sec-h .n{width:26px;height:26px;flex:0 0 auto;border-radius:7px;background:var(--aqua);color:var(--teal-d);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;letter-spacing:.02em;}
+.sec-h h2{margin:0;font-size:15.5px;font-weight:800;}
+.sec-d{font-size:12px;color:var(--muted);margin:7px 0 14px;line-height:1.6;font-weight:600;}
+label.f{display:block;font-size:12px;color:var(--ink2);margin:13px 0 6px;font-weight:700;}
+label.f:first-of-type{margin-top:2px;}
+.req{color:var(--warn);font-weight:800;margin-left:3px;font-size:11px;}
+input,select{width:100%;height:48px;padding:0 14px;font-size:16px;border:1.5px solid var(--line);border-radius:10px;background:#fcfdfe;color:var(--ink);transition:border-color .15s,box-shadow .15s;}
+input:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,141,156,.13);background:#fff;}
+input::placeholder{color:#b6c2cb;}
 
-/* children rows */
-.childrow{background:var(--sand);border-radius:14px;padding:12px;margin-bottom:10px;position:relative;border:1px solid #ffe9d6;}
-.childrow .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.childrow .head span{font-size:12.5px;font-weight:800;color:#e8853f;}
-.childrow .rm{border:none;background:#ffd9c4;color:#d2641f;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;}
-.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;}
-.addchild{width:100%;height:46px;border:1.6px dashed var(--teal);background:rgba(31,191,176,.06);color:var(--deep);font-size:14px;font-weight:800;border-radius:12px;}
+/* children */
+.childrow{border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:10px;background:#fbfcfd;}
+.childrow .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.childrow .idx{font-size:12px;font-weight:800;color:var(--teal-d);letter-spacing:.03em;}
+.childrow .rm{border:1px solid var(--line);background:#fff;color:var(--ink2);font-size:11.5px;font-weight:700;border-radius:7px;padding:5px 11px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.addchild{width:100%;height:46px;border:1.5px dashed #bcd2d6;background:#fff;color:var(--teal-d);font-size:13.5px;font-weight:800;border-radius:10px;margin-top:2px;}
 .addchild:disabled{opacity:.4;border-style:solid;}
 
 /* date cards */
-.dnote{font-size:12px;color:var(--muted);margin:-2px 0 10px;font-weight:700;}
-.datecard{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;cursor:pointer;background:#fbfdff;transition:all .15s;}
-.datecard .tick{width:24px;height:24px;border-radius:50%;border:2px solid #cdd8e1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex:0 0 auto;transition:all .15s;}
-.datecard .txt{font-size:15px;font-weight:700;}
-.datecard .sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:1px;}
-.datecard.sel{border-color:var(--teal);background:rgba(31,191,176,.08);box-shadow:0 0 0 2px rgba(31,191,176,.12);}
+.datecard{display:flex;align-items:center;gap:13px;border:1.5px solid var(--line);border-radius:11px;padding:14px;margin-bottom:9px;cursor:pointer;background:#fcfdfe;transition:all .14s;}
+.datecard .tick{width:23px;height:23px;border-radius:6px;border:2px solid #c5d2d9;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex:0 0 auto;transition:all .14s;}
+.datecard .txt{font-size:15.5px;font-weight:700;}
+.datecard .sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px;}
+.datecard.sel{border-color:var(--teal);background:var(--aqua);}
 .datecard.sel .tick{background:var(--teal);border-color:var(--teal);}
 
-/* toggles */
-.toggle{display:flex;align-items:center;gap:12px;padding:6px 0;}
-.toggle .sw{width:48px;height:28px;border-radius:999px;background:#d6dee5;position:relative;flex:0 0 auto;transition:background .2s;}
-.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s;}
+/* toggle + checks */
+.toggle{display:flex;align-items:flex-start;gap:12px;padding:2px 0;cursor:pointer;}
+.toggle .sw{width:46px;height:27px;border-radius:999px;background:#cfd9df;position:relative;flex:0 0 auto;margin-top:1px;transition:background .2s;}
+.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:left .2s;}
 .toggle.on .sw{background:var(--teal);}
-.toggle.on .sw::after{left:23px;}
-.toggle .lab{font-size:14px;font-weight:700;}
-.toggle .lab small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px;}
-.check{display:flex;align-items:flex-start;gap:11px;background:#fbfdff;border:1.5px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;}
-.check .box{width:24px;height:24px;border-radius:7px;border:2px solid #cdd8e1;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;transition:all .15s;}
-.check.on{border-color:var(--teal);background:rgba(31,191,176,.07);}
+.toggle.on .sw::after{left:22px;}
+.toggle .lab{font-size:13.5px;font-weight:700;line-height:1.55;}
+.toggle .lab small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px;}
+.check{display:flex;align-items:flex-start;gap:11px;border:1.5px solid var(--line);border-radius:10px;padding:13px;cursor:pointer;background:#fcfdfe;}
+.check .box{width:23px;height:23px;border-radius:6px;border:2px solid #c5d2d9;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:all .14s;}
+.check.on{border-color:var(--teal);}
 .check.on .box{background:var(--teal);border-color:var(--teal);}
-.check .t{font-size:13px;line-height:1.6;font-weight:600;}
-.check a{color:var(--deep);font-weight:800;}
+.check .t{font-size:12.5px;line-height:1.65;font-weight:600;}
+.check a{color:var(--teal-d);font-weight:800;text-decoration:underline;}
 
 /* submit */
-.foot{padding:4px 16px 30px;}
-.send{width:100%;height:56px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--coral),var(--coral2));color:#fff;font-size:17px;font-weight:800;box-shadow:0 8px 20px rgba(255,90,138,.32);transition:transform .1s,opacity .2s;}
-.send:active{transform:scale(.985);}
+.foot{padding:6px 16px 34px;}
+.send{width:100%;height:54px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-size:16px;font-weight:800;letter-spacing:.02em;box-shadow:0 6px 16px rgba(14,141,156,.26);transition:transform .1s,opacity .2s;}
+.send:active{transform:scale(.99);}
 .send:disabled{opacity:.6;}
-.fine{text-align:center;font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7;font-weight:600;}
+.fine{text-align:center;font-size:11.5px;color:var(--muted);margin-top:13px;line-height:1.7;font-weight:600;}
 
 /* done */
-.done{display:none;text-align:center;padding:70px 24px;}
-.done .big{font-size:60px;}
-.done h1{font-size:22px;margin:14px 0 8px;font-weight:800;}
-.done p{font-size:14px;color:var(--muted);line-height:1.8;}
+.done{display:none;text-align:center;padding:78px 28px;}
+.done .mk{width:72px;height:72px;border-radius:50%;background:var(--aqua);margin:0 auto 22px;display:flex;align-items:center;justify-content:center;}
+.done h1{font-size:20px;margin:0 0 10px;font-weight:800;}
+.done p{font-size:13.5px;color:var(--ink2);line-height:1.85;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <div id="app">
-  <div class="hero">
-    <div class="sun"></div>
-    <h1>🌊 海あそび 参加申込</h1>
-    <p>夏の海で、子どもたちが“いま”に夢中になる時間を。<br>かんたん入力、1分で完了します！</p>
-    <span class="badge">☀️ 鎌倉・材木座海岸</span>
-  </div>
-  <svg class="wave" viewBox="0 0 480 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:24px;margin-top:-24px"><path d="M0,12 C80,24 160,0 240,10 C320,20 400,4 480,12 L480,24 L0,24 Z" fill="#f3f8fb"/></svg>
+  <header class="hd">
+    <div class="brand">IKIMARU</div>
+    <div class="brand-rule"></div>
+    <h1>海あそび 参加申込</h1>
+    <p class="lead">鎌倉・材木座海岸で開催する、子どものための海あそびプログラム。下記フォームよりお申込みください。</p>
+    <div class="trust">
+      <span><b>対象</b> 5歳〜</span>
+      <span><b>定員</b> 20名</span>
+      <span><b>ライフセーバー在籍</b>・少人数制で安全に配慮</span>
+    </div>
+  </header>
+  <svg class="wv" viewBox="0 0 480 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,11 C90,22 170,2 250,9 C330,16 410,4 480,11 L480,22 L0,22 Z" fill="#f4f7f8"/></svg>
 
   <main>
-    <!-- 子ども -->
     <div class="card">
-      <h2><span class="em">🧒</span>参加するお子さま</h2>
+      <div class="sec-h"><span class="n">01</span><h2>参加するお子さま</h2></div>
+      <p class="sec-d">ごきょうだいは「追加」より最大4名まで登録できます。</p>
       <div id="children"></div>
       <button type="button" class="addchild" id="addChild">＋ お子さまを追加（最大4名）</button>
     </div>
 
-    <!-- 保護者 -->
     <div class="card">
-      <h2><span class="em">👪</span>保護者・連絡先</h2>
-      <label class="f">保護者のお名前 <span class="req">*</span></label>
+      <div class="sec-h"><span class="n">02</span><h2>保護者・ご連絡先</h2></div>
+      <label class="f">保護者のお名前 <span class="req">必須</span></label>
       <input type="text" id="guardian" placeholder="例）山田 花子">
-      <label class="f">当日つながる電話番号 <span class="req">*</span></label>
+      <label class="f">当日つながるお電話番号 <span class="req">必須</span></label>
       <input type="tel" id="phone" placeholder="090-0000-0000">
     </div>
 
-    <!-- 緊急連絡先 -->
     <div class="card">
-      <h2><span class="em">🆘</span>緊急連絡先</h2>
-      <label class="f">お名前 <span class="req">*</span></label>
+      <div class="sec-h"><span class="n">03</span><h2>緊急連絡先</h2></div>
+      <p class="sec-d">当日、保護者の方と連絡がつかない場合のご連絡先です。</p>
+      <label class="f">お名前 <span class="req">必須</span></label>
       <input type="text" id="emgName" placeholder="例）山田 太郎">
       <div class="grid2" style="margin-top:8px">
         <input type="text" id="emgRel" placeholder="続柄（父・母 等）">
@@ -121,37 +128,37 @@ input::placeholder{color:#b8c4cf;}
       </div>
     </div>
 
-    <!-- 参加希望日 -->
     <div class="card">
-      <h2><span class="em">📅</span>参加したい日</h2>
-      <p class="dnote">✅ 複数えらべます！来られる日を全部タップ</p>
+      <div class="sec-h"><span class="n">04</span><h2>参加希望日</h2></div>
+      <p class="sec-d">ご都合のつく日をすべてお選びください（複数選択できます）。</p>
       <div id="dates"></div>
     </div>
 
-    <!-- 確認・同意 -->
     <div class="card">
-      <h2><span class="em">📸</span>確認ごと</h2>
+      <div class="sec-h"><span class="n">05</span><h2>ご確認・同意事項</h2></div>
       <div class="toggle on" id="photoTog">
         <div class="sw"></div>
-        <div class="lab">活動中の写真・動画の掲載にOK<small>Instagram・HP等。希望されない方はオフにしてください</small></div>
+        <div class="lab">活動中の写真・動画の掲載に同意します<small>活動記録・広報（Instagram／ウェブサイト等）に使用します。ご希望されない場合はオフにしてください。</small></div>
       </div>
+      <div style="height:12px"></div>
+      <label class="check" id="meetChk"><span class="box"></span><span class="t">集合・解散の場所と時間を確認しました。</span></label>
       <div style="height:10px"></div>
-      <label class="check" id="meetChk"><span class="box"></span><span class="t">集合・解散の場所と時間を確認しました</span></label>
-      <div style="height:10px"></div>
-      <label class="check" id="agreeChk"><span class="box"></span><span class="t">利用規約・参加同意（免責）・キャンセル/中止・個人情報の取扱いに同意します　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
+      <label class="check" id="agreeChk"><span class="box"></span><span class="t">利用規約・参加同意（免責）・キャンセル／中止ポリシー・個人情報の取扱いに同意します。　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
     </div>
   </main>
 
   <div class="foot">
-    <button class="send" id="send">この内容で申し込む 🙌</button>
-    <p class="fine">参加費は当日現金（1,500円／日）。<br>2回目以降も、この画面からかんたんに申込めます。</p>
+    <button class="send" id="send">申込内容を送信する</button>
+    <p class="fine">参加費は当日、現金にてお支払いください（1名 1日 1,500円）。<br>ご不明な点は公式LINEまでお問い合わせください。</p>
   </div>
 </div>
 
 <div class="done" id="done">
-  <div class="big">🌊🎉</div>
-  <h1>お申込みありがとう！</h1>
-  <p>受付しました。<br>LINEのトークに確認をお送りします。<br>当日が楽しみですね、海で会いましょう！☀️</p>
+  <div class="mk">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.2 4.2L19 7" stroke="#0e8d9c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <h1>お申込みを受け付けました</h1>
+  <p>ご登録のLINEに確認のご連絡をお送りします。<br>当日お会いできるのを楽しみにしております。</p>
 </div>
 
 </div>
@@ -161,22 +168,20 @@ input::placeholder{color:#b8c4cf;}
 var LIFF_ID = "2010388432-T1i0hg4p";
 var GAS_URL  = "https://script.google.com/macros/s/AKfycbxhdv3tqF0KVpxERk8PY9FipD08WWyGBY2tmZdq8CKdPuuXWKbxtXIZzAYH-wJy4x8lbA/exec";
 var EVENTS = [
-  { value:"7/1（火）海あそび①", label:"7/1（火）", sub:"海あそび①" },
-  { value:"8/1（金）海あそび②", label:"8/1（金）", sub:"海あそび②" }
+  { value:"7/1（火）海あそび①", label:"7月1日（火）", sub:"海あそび①" },
+  { value:"8/1（金）海あそび②", label:"8月1日（金）", sub:"海あそび②" }
 ];
 var GRADES = ["年中","年長","小1","小2","小3","小4","小5","小6","その他"];
 var MAX_CHILD = 4;
 var profile = { userId:"", displayName:"" };
 
-/* ---- children ---- */
 function gradeOpts(){ return '<option value="">学年</option>'+GRADES.map(function(g){return '<option>'+g+'</option>';}).join(''); }
 function childCount(){ return document.querySelectorAll("#children .childrow").length; }
 function refreshChildUI(){
   var n = childCount();
   document.querySelectorAll("#children .childrow").forEach(function(r,i){
     r.querySelector(".idx").textContent = (i+1)+"人目";
-    var rm = r.querySelector(".rm");
-    rm.style.display = (n>1) ? "" : "none";
+    r.querySelector(".rm").style.display = (n>1) ? "" : "none";
   });
   document.getElementById("addChild").disabled = (n>=MAX_CHILD);
 }
@@ -187,27 +192,23 @@ function addChild(){
   div.innerHTML =
     '<div class="head"><span class="idx"></span><button type="button" class="rm">削除</button></div>'+
     '<input type="text" class="cname" placeholder="お名前">'+
-    '<div class="grid2" style="margin-top:8px"><div></div>'+
-    '<select class="cgrade">'+gradeOpts()+'</select></div>';
-  div.querySelector(".grid2").style.gridTemplateColumns = "1fr 1fr";
+    '<div class="grid2" style="margin-top:8px"><div></div><select class="cgrade">'+gradeOpts()+'</select></div>';
   div.querySelector(".rm").addEventListener("click",function(){ div.remove(); refreshChildUI(); });
   document.getElementById("children").appendChild(div);
   refreshChildUI();
 }
 
-/* ---- dates ---- */
 function renderDates(){
   var b = document.getElementById("dates");
   EVENTS.forEach(function(ev){
     var d = document.createElement("div");
     d.className = "datecard"; d.dataset.value = ev.value;
-    d.innerHTML = '<div class="tick">✓</div><div><div class="txt">'+ev.label+'</div><div class="sub">'+ev.sub+'</div></div>';
+    d.innerHTML = '<div class="tick">&#10003;</div><div><div class="txt">'+ev.label+'</div><div class="sub">'+ev.sub+'</div></div>';
     d.addEventListener("click",function(){ d.classList.toggle("sel"); });
     b.appendChild(d);
   });
 }
 
-/* ---- toggles ---- */
 function bindToggle(id){ var e=document.getElementById(id); e.addEventListener("click",function(){ e.classList.toggle("on"); }); }
 
 function init(){
@@ -226,7 +227,6 @@ function init(){
 
 function submit(){
   var kids = [];
-  var bad = false;
   document.querySelectorAll("#children .childrow").forEach(function(r){
     var nm = r.querySelector(".cname").value.trim();
     var gr = r.querySelector(".cgrade").value;
@@ -239,9 +239,9 @@ function submit(){
   var dates = [].slice.call(document.querySelectorAll(".datecard.sel")).map(function(d){return d.dataset.value;});
 
   if(kids.length===0){ alert("お子さまのお名前を1名以上ご入力ください"); return; }
-  if(!gu||!ph){ alert("保護者のお名前・電話番号をご入力ください"); return; }
+  if(!gu||!ph){ alert("保護者のお名前・お電話番号をご入力ください"); return; }
   if(!en||!ep){ alert("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
-  if(dates.length===0){ alert("参加したい日を1つ以上えらんでください"); return; }
+  if(dates.length===0){ alert("参加希望日を1つ以上お選びください"); return; }
   if(!document.getElementById("meetChk").classList.contains("on")){ alert("集合・解散の確認にチェックをお願いします"); return; }
   if(!document.getElementById("agreeChk").classList.contains("on")){ alert("規約への同意をお願いします"); return; }
 
@@ -261,7 +261,7 @@ function submit(){
     document.getElementById("done").style.display="block";
     window.scrollTo(0,0);
     setTimeout(function(){ try{ if(liff&&liff.isInClient()) liff.closeWindow(); }catch(e){} },2800);
-  }).catch(function(){ b.disabled=false; b.textContent="この内容で申し込む 🙌"; alert("送信に失敗しました。もう一度お試しください。"); });
+  }).catch(function(){ b.disabled=false; b.textContent="申込内容を送信する"; alert("送信に失敗しました。もう一度お試しください。"); });
 }
 
 init();
