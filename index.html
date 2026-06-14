@@ -109,6 +109,10 @@ input::placeholder{color:#b6c2cb;}
       <div class="sec-h"><span class="n">02</span><h2>保護者・ご連絡先</h2></div>
       <label class="f">保護者のお名前 <span class="req">必須</span></label>
       <input type="text" id="guardian" placeholder="例）山田 花子">
+      <label class="f">お住まいの市区町村 <span class="req">必須</span></label>
+      <input type="text" id="area" placeholder="例）鎌倉市">
+      <label class="f">通っている園・学校名（任意）</label>
+      <input type="text" id="school" placeholder="例）◯◯幼稚園／◯◯小学校">
       <label class="f">当日つながるお電話番号 <span class="req">必須</span></label>
       <input type="tel" id="phone" placeholder="090-0000-0000">
     </div>
@@ -226,13 +230,15 @@ function submit(){
     if(nm){ kids.push(nm + (gr ? "（"+gr+"）" : "")); }
   });
   var gu = document.getElementById("guardian").value.trim();
+  var ar = document.getElementById("area").value.trim();
+  var sc = document.getElementById("school").value.trim();
   var ph = document.getElementById("phone").value.trim();
   var en = document.getElementById("emgName").value.trim();
   var ep = document.getElementById("emgPhone").value.trim();
   var dates = [].slice.call(document.querySelectorAll(".datecard.sel")).map(function(d){return d.dataset.value;});
 
   if(kids.length===0){ alert("お子さまのお名前を1名以上ご入力ください"); return; }
-  if(!gu||!ph){ alert("保護者のお名前・お電話番号をご入力ください"); return; }
+  if(!gu||!ar||!ph){ alert("保護者のお名前・お住まいの市区町村・お電話番号をご入力ください"); return; }
   if(!en||!ep){ alert("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
   if(dates.length===0){ alert("参加希望日を1つ以上お選びください"); return; }
   if(!document.getElementById("meetChk").classList.contains("on")){ alert("集合・解散の確認にチェックをお願いします"); return; }
@@ -241,7 +247,7 @@ function submit(){
   var pl = {
     timestamp:new Date().toISOString(),
     userId:profile.userId, displayName:profile.displayName,
-    guardian:gu, phone:ph, emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
+    guardian:gu, area:ar, school:sc, phone:ph, emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
     children: kids.join(" / "), childCount: kids.length,
     dates:dates.join(" / "), meet:true,
     photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG",
