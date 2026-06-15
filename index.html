@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>いきまる｜海あそび 参加申込</title>
+<title>いきまる｜海あそび 参加申込み</title>
 <style>
 :root{
   --ink:#102a37; --ink2:#436173; --muted:#8497a3;
@@ -13,22 +13,15 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;}
 .wrap{max-width:480px;margin:0 auto;min-height:100vh;}
-
-/* header */
 .hd{position:relative;background:linear-gradient(155deg,#103241,#0e6d7c 95%);color:#fff;padding:24px 22px 34px;}
 .brand{font-size:13px;letter-spacing:.18em;font-weight:700;opacity:.9;}
 .brand-rule{width:26px;height:2px;background:rgba(255,255,255,.55);margin:9px 0 14px;}
 .hd h1{margin:0;font-size:21px;font-weight:800;letter-spacing:.01em;}
-.hd .lead{margin:9px 0 0;font-size:13px;line-height:1.7;opacity:.92;}
-.trust{margin-top:16px;padding-top:13px;border-top:1px solid rgba(255,255,255,.18);font-size:11.5px;line-height:1.6;opacity:.9;display:flex;flex-wrap:wrap;gap:4px 14px;}
-.trust b{font-weight:700;opacity:1;}
 .wv{display:block;width:100%;height:22px;margin-top:-22px;position:relative;z-index:1;}
-
-/* body */
 main{padding:0 16px 24px;margin-top:-20px;position:relative;z-index:2;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:13px;box-shadow:0 2px 10px rgba(16,42,55,.04);}
 .sec-h{display:flex;align-items:center;gap:11px;margin:0 0 4px;}
-.sec-h .n{width:26px;height:26px;flex:0 0 auto;border-radius:7px;background:var(--aqua);color:var(--teal-d);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;letter-spacing:.02em;}
+.sec-h .n{width:26px;height:26px;flex:0 0 auto;border-radius:7px;background:var(--aqua);color:var(--teal-d);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
 .sec-h h2{margin:0;font-size:15.5px;font-weight:800;}
 .sec-d{font-size:12px;color:var(--muted);margin:7px 0 14px;line-height:1.6;font-weight:600;}
 label.f{display:block;font-size:12px;color:var(--ink2);margin:13px 0 6px;font-weight:700;}
@@ -37,32 +30,27 @@ label.f:first-of-type{margin-top:2px;}
 input,select{width:100%;height:48px;padding:0 14px;font-size:16px;border:1.5px solid var(--line);border-radius:10px;background:#fcfdfe;color:var(--ink);transition:border-color .15s,box-shadow .15s;}
 input:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,141,156,.13);background:#fff;}
 input::placeholder{color:#b6c2cb;}
-
-/* children */
 .childrow{border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:10px;background:#fbfcfd;}
 .childrow .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
-.childrow .idx{font-size:12px;font-weight:800;color:var(--teal-d);letter-spacing:.03em;}
+.childrow .idx{font-size:12px;font-weight:800;color:var(--teal-d);}
 .childrow .rm{border:1px solid var(--line);background:#fff;color:var(--ink2);font-size:11.5px;font-weight:700;border-radius:7px;padding:5px 11px;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .addchild{width:100%;height:46px;border:1.5px dashed #bcd2d6;background:#fff;color:var(--teal-d);font-size:13.5px;font-weight:800;border-radius:10px;margin-top:2px;}
 .addchild:disabled{opacity:.4;border-style:solid;}
-
-/* date cards */
 .datecard{display:flex;align-items:center;gap:13px;border:1.5px solid var(--line);border-radius:11px;padding:14px;margin-bottom:9px;cursor:pointer;background:#fcfdfe;transition:all .14s;}
 .datecard .tick{width:23px;height:23px;border-radius:6px;border:2px solid #c5d2d9;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex:0 0 auto;transition:all .14s;}
 .datecard .txt{font-size:15.5px;font-weight:700;}
-.datecard .sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px;}
 .datecard.sel{border-color:var(--teal);background:var(--aqua);}
 .datecard.sel .tick{background:var(--teal);border-color:var(--teal);}
-
-/* toggle + checks */
-.toggle{display:flex;align-items:flex-start;gap:12px;padding:2px 0;cursor:pointer;}
-.toggle .sw{width:46px;height:27px;border-radius:999px;background:#cfd9df;position:relative;flex:0 0 auto;margin-top:1px;transition:background .2s;}
-.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:left .2s;}
-.toggle.on .sw{background:var(--teal);}
-.toggle.on .sw::after{left:22px;}
-.toggle .lab{font-size:13.5px;font-weight:700;line-height:1.55;}
-.toggle .lab small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px;}
+.datecard .state{margin-left:auto;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.02em;}
+.datecard .state.low{background:#fdeee7;color:var(--warn);}
+.datecard.full{cursor:not-allowed;background:#f4f6f7;border-color:var(--line);opacity:.85;}
+.datecard.full .txt{color:var(--muted);}
+.datecard.full .tick{display:none;}
+.datecard .state.s-full{background:#eaeef0;color:#8a98a2;}
+.dmsg{font-size:13px;color:var(--ink2);font-weight:600;padding:6px 2px;line-height:1.7;}
+.dmsg .retry{display:inline-block;margin-top:8px;color:var(--teal-d);font-weight:800;text-decoration:underline;cursor:pointer;}
+.toggle{display:none;}
 .check{display:flex;align-items:flex-start;gap:11px;border:1.5px solid var(--line);border-radius:10px;padding:13px;cursor:pointer;background:#fcfdfe;}
 .check .box{width:23px;height:23px;border-radius:6px;border:2px solid #c5d2d9;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:all .14s;}
 .check.on{border-color:var(--teal);background:var(--aqua);}
@@ -71,15 +59,11 @@ input::placeholder{color:#b6c2cb;}
 .check .t{font-size:12.5px;line-height:1.65;font-weight:600;}
 .check .t small{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:3px;line-height:1.55;}
 .check a{color:var(--teal-d);font-weight:800;text-decoration:underline;}
-
-/* submit */
 .foot{padding:6px 16px 34px;}
 .send{width:100%;height:54px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-size:16px;font-weight:800;letter-spacing:.02em;box-shadow:0 6px 16px rgba(14,141,156,.26);transition:transform .1s,opacity .2s;}
 .send:active{transform:scale(.99);}
 .send:disabled{opacity:.6;}
 .fine{text-align:center;font-size:11.5px;color:var(--muted);margin-top:13px;line-height:1.7;font-weight:600;}
-
-/* done */
 .done{display:none;text-align:center;padding:78px 28px;}
 .done .mk{width:72px;height:72px;border-radius:50%;background:var(--aqua);margin:0 auto 22px;display:flex;align-items:center;justify-content:center;}
 .done h1{font-size:20px;margin:0 0 10px;font-weight:800;}
@@ -131,7 +115,7 @@ input::placeholder{color:#b6c2cb;}
     <div class="card">
       <div class="sec-h"><span class="n">04</span><h2>参加希望日</h2></div>
       <p class="sec-d">ご都合のつく日をすべてお選びください（複数選択できます）。</p>
-      <div id="dates"></div>
+      <div id="dates"><div class="dmsg">日程を読み込み中…</div></div>
     </div>
 
     <div class="card">
@@ -155,7 +139,7 @@ input::placeholder{color:#b6c2cb;}
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.2 4.2L19 7" stroke="#0e8d9c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <h1>お申込みを受け付けました</h1>
-  <p>ご登録のLINEに確認のご連絡をお送りします。<br>当日お会いできるのを楽しみにしております。</p>
+  <p id="doneMsg">ご登録のLINEに確認のご連絡をお送りします。<br>当日お会いできるのを楽しみにしております。</p>
 </div>
 
 </div>
@@ -164,14 +148,12 @@ input::placeholder{color:#b6c2cb;}
 <script>
 var LIFF_ID = "2010388432-T1i0hg4p";
 var GAS_URL  = "https://script.google.com/macros/s/AKfycbxhdv3tqF0KVpxERk8PY9FipD08WWyGBY2tmZdq8CKdPuuXWKbxtXIZzAYH-wJy4x8lbA/exec";
-var EVENTS = [
-  { value:"7/1（火）海あそび①", label:"7月1日（火）", sub:"海あそび①" },
-  { value:"8/1（金）海あそび②", label:"8月1日（金）", sub:"海あそび②" }
-];
 var GRADES = ["年中","年長","小1","小2","小3","小4","小5","小6","その他"];
 var MAX_CHILD = 4;
 var profile = { userId:"", displayName:"" };
+var selected = {};   // value -> true（選択中の日程）
 
+/* ===== 子ども ===== */
 function gradeOpts(){ return '<option value="">学年</option>'+GRADES.map(function(g){return '<option>'+g+'</option>';}).join(''); }
 function childCount(){ return document.querySelectorAll("#children .childrow").length; }
 function refreshChildUI(){
@@ -195,26 +177,64 @@ function addChild(){
   refreshChildUI();
 }
 
-function renderDates(){
-  var b = document.getElementById("dates");
-  EVENTS.forEach(function(ev){
+/* ===== 日程（スプレッドシートから取得）===== */
+var cbN = 0;
+function fetchSchedule(cb){
+  var name = "__sched"+(++cbN), done=false;
+  window[name] = function(data){ done=true; try{ cb(data && data.events); }finally{ try{delete window[name];}catch(e){window[name]=null;} } };
+  var s = document.createElement("script");
+  s.onerror = function(){ if(!done){ cb(null); try{delete window[name];}catch(e){} } };
+  s.src = GAS_URL + "?action=schedule&callback="+name+"&_="+Date.now();
+  document.body.appendChild(s);
+  setTimeout(function(){ if(!done){ try{cb(null);}catch(e){} } }, 9000);
+}
+function renderDates(events){
+  var box = document.getElementById("dates");
+  box.innerHTML = "";
+  if (events === null){
+    box.innerHTML = '<div class="dmsg">日程の読み込みに失敗しました。<span class="retry" id="reDates">再読み込み</span></div>';
+    document.getElementById("reDates").addEventListener("click",loadDates);
+    return;
+  }
+  if (!events.length){
+    box.innerHTML = '<div class="dmsg">現在受付中の日程はありません。<br>次回の募集をお待ちください。</div>';
+    return;
+  }
+  // 満席になった選択は外す
+  Object.keys(selected).forEach(function(v){
+    var ev = events.filter(function(e){return e.value===v;})[0];
+    if(!ev || ev.status==="full") delete selected[v];
+  });
+  events.forEach(function(ev){
     var d = document.createElement("div");
-    d.className = "datecard"; d.dataset.value = ev.value;
-    d.innerHTML = '<div class="tick">&#10003;</div><div><div class="txt">'+ev.label+'</div><div class="sub">'+ev.sub+'</div></div>';
-    d.addEventListener("click",function(){ d.classList.toggle("sel"); });
-    b.appendChild(d);
+    d.className = "datecard" + (ev.status==="full" ? " full" : "") + (selected[ev.value] ? " sel" : "");
+    d.dataset.value = ev.value;
+    var state = ev.status==="full" ? '<span class="state s-full">満席</span>'
+              : (ev.low ? '<span class="state low">残りわずか</span>' : '');
+    d.innerHTML = '<div class="tick">&#10003;</div><div class="txt">'+ev.name+'</div>'+state;
+    if (ev.status!=="full"){
+      d.addEventListener("click",function(){
+        if(selected[ev.value]){ delete selected[ev.value]; d.classList.remove("sel"); }
+        else { selected[ev.value]=true; d.classList.add("sel"); }
+      });
+    }
+    box.appendChild(d);
   });
 }
+function loadDates(){
+  document.getElementById("dates").innerHTML = '<div class="dmsg">日程を読み込み中…</div>';
+  fetchSchedule(renderDates);
+}
 
-function bindToggle(id){ var e=document.getElementById(id); e.addEventListener("click",function(){ e.classList.toggle("on"); }); }
+/* ===== 同意トグル ===== */
+function bindCheck(id){ var e=document.getElementById(id); e.addEventListener("click",function(){ e.classList.toggle("on"); }); }
 
 function init(){
-  addChild(); renderDates();
-  bindToggle("meetChk"); bindToggle("agreeChk");
+  addChild(); loadDates();
   document.getElementById("photoTog").addEventListener("click",function(){ this.classList.toggle("on"); });
+  bindCheck("meetChk"); bindCheck("agreeChk");
   document.getElementById("addChild").addEventListener("click",addChild);
   document.getElementById("send").addEventListener("click",submit);
-
   if (typeof liff==="undefined" || LIFF_ID.indexOf("PUT_")===0) return;
   liff.init({liffId:LIFF_ID}).then(function(){
     if(!liff.isLoggedIn()){ liff.login(); return; }
@@ -222,39 +242,56 @@ function init(){
   }).catch(function(e){});
 }
 
-function submit(){
-  var kids = [];
+/* ===== 送信 ===== */
+function gatherKids(){
+  var kids=[];
   document.querySelectorAll("#children .childrow").forEach(function(r){
-    var nm = r.querySelector(".cname").value.trim();
-    var gr = r.querySelector(".cgrade").value;
-    if(nm){ kids.push(nm + (gr ? "（"+gr+"）" : "")); }
+    var nm=r.querySelector(".cname").value.trim(), gr=r.querySelector(".cgrade").value;
+    if(nm) kids.push(nm + (gr ? "（"+gr+"）" : ""));
   });
-  var gu = document.getElementById("guardian").value.trim();
-  var ar = document.getElementById("area").value.trim();
-  var sc = document.getElementById("school").value.trim();
-  var ph = document.getElementById("phone").value.trim();
-  var en = document.getElementById("emgName").value.trim();
-  var ep = document.getElementById("emgPhone").value.trim();
-  var dates = [].slice.call(document.querySelectorAll(".datecard.sel")).map(function(d){return d.dataset.value;});
+  return kids;
+}
+function submit(){
+  var kids = gatherKids();
+  var gu=document.getElementById("guardian").value.trim();
+  var ar=document.getElementById("area").value.trim();
+  var sc=document.getElementById("school").value.trim();
+  var ph=document.getElementById("phone").value.trim();
+  var en=document.getElementById("emgName").value.trim();
+  var ep=document.getElementById("emgPhone").value.trim();
+  var sel = Object.keys(selected);
 
   if(kids.length===0){ alert("お子さまのお名前を1名以上ご入力ください"); return; }
   if(!gu||!ar||!ph){ alert("保護者のお名前・お住まいの市区町村・お電話番号をご入力ください"); return; }
   if(!en||!ep){ alert("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
-  if(dates.length===0){ alert("参加希望日を1つ以上お選びください"); return; }
+  if(sel.length===0){ alert("参加希望日を1つ以上お選びください"); return; }
   if(!document.getElementById("meetChk").classList.contains("on")){ alert("集合・解散の確認にチェックをお願いします"); return; }
   if(!document.getElementById("agreeChk").classList.contains("on")){ alert("規約への同意をお願いします"); return; }
 
+  var b=document.getElementById("send"); b.disabled=true; b.textContent="空き状況を確認中…";
+  // 送信直前に最新の空きを確認（満席ガード）
+  fetchSchedule(function(events){
+    if(events===null){ b.disabled=false; b.textContent="申込内容を送信する"; alert("通信に失敗しました。もう一度お試しください。"); return; }
+    renderDates(events);
+    var stillFull = sel.filter(function(v){ var ev=events.filter(function(e){return e.value===v;})[0]; return !ev || ev.status==="full"; });
+    if(stillFull.length){
+      b.disabled=false; b.textContent="申込内容を送信する";
+      alert("申し訳ありません、ご選択中の日程が満席になりました。\n空き状況を更新しましたのでご確認ください。");
+      return;
+    }
+    doSend(kids, gu, ar, sc, ph, en, ep, Object.keys(selected), b);
+  });
+}
+function doSend(kids,gu,ar,sc,ph,en,ep,sel,b){
   var pl = {
-    timestamp:new Date().toISOString(),
-    userId:profile.userId, displayName:profile.displayName,
-    guardian:gu, area:ar, school:sc, phone:ph, emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
-    children: kids.join(" / "), childCount: kids.length,
-    dates:dates.join(" / "), meet:true,
-    photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG",
-    agree:true
+    timestamp:new Date().toISOString(), userId:profile.userId, displayName:profile.displayName,
+    guardian:gu, area:ar, school:sc, phone:ph,
+    emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
+    children:kids.join(" / "), childCount:kids.length,
+    dates:sel.join(" / "), meet:true,
+    photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG", agree:true
   };
-
-  var b=document.getElementById("send"); b.disabled=true; b.textContent="送信中…";
+  b.textContent="送信中…";
   fetch(GAS_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(pl)}).then(function(){
     document.getElementById("app").style.display="none";
     document.getElementById("done").style.display="block";
