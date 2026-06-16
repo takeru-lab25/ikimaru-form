@@ -118,15 +118,13 @@ input::placeholder{color:#b6c2cb;}
 
     <div class="card">
       <div class="sec-h"><span class="n">04</span><h2>参加希望日</h2></div>
-      <p class="sec-d">ご都合のつく日をすべてお選びください（複数選択できます）。</p>
+      <p class="sec-d">参加希望日をすべてお選びください（複数選択できます）。</p>
       <div id="dates"><div class="dmsg">日程を読み込み中…</div></div>
     </div>
 
     <div class="card">
       <div class="sec-h"><span class="n">05</span><h2>ご確認・同意事項</h2></div>
       <label class="check on" id="photoTog"><span class="box"></span><span class="t">活動中の写真・動画の掲載に同意します（撮影許可）<small>活動記録・広報（Instagram／ウェブサイト等）に使用します。希望されない場合はチェックを外してください。</small></span></label>
-      <div style="height:10px"></div>
-      <label class="check" id="meetChk"><span class="box"></span><span class="t">集合・解散の場所と時間を確認しました。</span></label>
       <div style="height:10px"></div>
       <label class="check" id="agreeChk"><span class="box"></span><span class="t">利用規約・参加同意（免責）・キャンセル／中止ポリシー・個人情報の取扱いに同意します。　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
     </div>
@@ -282,7 +280,7 @@ function bindCheck(id){ var e=document.getElementById(id); e.addEventListener("c
 function init(){
   addChild(); loadDates();
   document.getElementById("photoTog").addEventListener("click",function(){ this.classList.toggle("on"); });
-  bindCheck("meetChk"); bindCheck("agreeChk");
+  bindCheck("agreeChk");
   document.getElementById("addChild").addEventListener("click",function(){ addChild(); });
   document.getElementById("send").addEventListener("click",submit);
   if (typeof liff==="undefined" || LIFF_ID.indexOf("PUT_")===0) return;
@@ -319,7 +317,6 @@ function submit(){
   if(!gu||!ar||!ph){ alert("保護者のお名前・お住まいの市区町村・お電話番号をご入力ください"); return; }
   if(!en||!ep){ alert("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
   if(sel.length===0){ alert("参加希望日を1つ以上お選びください"); return; }
-  if(!document.getElementById("meetChk").classList.contains("on")){ alert("集合・解散の確認にチェックをお願いします"); return; }
   if(!document.getElementById("agreeChk").classList.contains("on")){ alert("規約への同意をお願いします"); return; }
 
   var b=document.getElementById("send"); b.disabled=true; b.textContent="空き状況を確認中…";
@@ -343,7 +340,7 @@ function doSend(rows,gu,ar,ph,en,ep,sel,b){
     children: rows.map(function(r){return r.label;}).join(" / "),
     schools:  rows.map(function(r){return r.school;}).join(" / "),
     childCount: rows.length,
-    dates:sel.join(" / "), meet:true,
+    dates:sel.join(" / "),
     photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG", agree:true
   };
   b.textContent="送信中…";
