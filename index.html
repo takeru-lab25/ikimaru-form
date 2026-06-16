@@ -51,6 +51,8 @@ input::placeholder{color:#b6c2cb;}
 .datecard.full .txt{color:var(--muted);}
 .datecard.full .tick{display:none;}
 .datecard .state.s-full{background:#eaeef0;color:#8a98a2;}
+.dgroup{font-size:13.5px;font-weight:800;color:var(--teal-d);margin:4px 0 9px;}
+.dgroup:not(:first-child){margin-top:16px;border-top:1px solid var(--line);padding-top:15px;}
 .dmsg{font-size:13px;color:var(--ink2);font-weight:600;padding:6px 2px;line-height:1.7;}
 .dmsg .retry{display:inline-block;margin-top:8px;color:var(--teal-d);font-weight:800;text-decoration:underline;cursor:pointer;}
 .check{display:flex;align-items:flex-start;gap:11px;border:1.5px solid var(--line);border-radius:10px;padding:13px;cursor:pointer;background:#fcfdfe;}
@@ -241,7 +243,13 @@ function renderDates(events){
     var ev = events.filter(function(e){return e.value===v;})[0];
     if(!ev || ev.status==="full") delete selected[v];
   });
+  var curGroup = null;
   events.forEach(function(ev){
+    if (ev.group && ev.group !== curGroup){
+      curGroup = ev.group;
+      var h = document.createElement("div"); h.className = "dgroup"; h.textContent = ev.group;
+      box.appendChild(h);
+    }
     var d = document.createElement("div");
     d.className = "datecard" + (ev.status==="full" ? " full" : "") + (selected[ev.value] ? " sel" : "");
     d.dataset.value = ev.value;
