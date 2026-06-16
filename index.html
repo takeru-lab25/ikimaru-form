@@ -101,8 +101,6 @@ input::placeholder{color:#b6c2cb;}
       <input type="text" id="guardian" placeholder="例）山田 花子">
       <label class="f">お住まいの市区町村 <span class="req">必須</span></label>
       <input type="text" id="area" placeholder="例）鎌倉市">
-      <label class="f">通っている園・学校名（任意）</label>
-      <input type="text" id="school" placeholder="例）◯◯幼稚園／◯◯小学校">
       <label class="f">当日つながるお電話番号 <span class="req">必須</span></label>
       <input type="tel" id="phone" placeholder="090-0000-0000">
     </div>
@@ -171,17 +169,21 @@ function refreshChildUI(){
   });
   document.getElementById("addChild").disabled = (n>=MAX_CHILD);
 }
-function addChild(name, grade){
+function addChild(name, grade, school){
   if (childCount()>=MAX_CHILD) return;
   var div = document.createElement("div");
   div.className = "childrow";
   div.innerHTML =
     '<div class="head"><span class="idx"></span><button type="button" class="rm">削除</button></div>'+
-    '<input type="text" class="cname" placeholder="お名前">'+
-    '<div class="grid2" style="margin-top:8px"><div></div><select class="cgrade">'+gradeOpts()+'</select></div>';
+    '<input type="text" class="cname" placeholder="お子さまのお名前">'+
+    '<div style="display:grid;grid-template-columns:96px 1fr;gap:8px;margin-top:8px">'+
+      '<select class="cgrade">'+gradeOpts()+'</select>'+
+      '<input type="text" class="cschool" placeholder="園・学校名（任意）">'+
+    '</div>';
   div.querySelector(".rm").addEventListener("click",function(){ div.remove(); refreshChildUI(); });
-  if (name)  div.querySelector(".cname").value = name;
-  if (grade) div.querySelector(".cgrade").value = grade;
+  if (name)   div.querySelector(".cname").value = name;
+  if (grade)  div.querySelector(".cgrade").value = grade;
+  if (school) div.querySelector(".cschool").value = school;
   document.getElementById("children").appendChild(div);
   refreshChildUI();
 }
@@ -201,14 +203,17 @@ function loadProfile(){
   if(!profile.userId) return;
   fetchProfile(profile.userId, function(d){
     if(!d || !d.found) return;
-    setVal("guardian",d.guardian); setVal("area",d.area); setVal("school",d.school); setVal("phone",d.phone);
+    setVal("guardian",d.guardian); setVal("area",d.area); setVal("phone",d.phone);
     setVal("emgName",d.emgName); setVal("emgRel",d.emgRel); setVal("emgPhone",d.emgPhone);
     if(d.children){
+      var cs = String(d.children).split(" / ");
+      var ss = String(d.schools||"").split(" / ");
       document.getElementById("children").innerHTML="";
-      String(d.children).split(" / ").forEach(function(c){
+      cs.forEach(function(c, i){
         c=c.trim(); if(!c) return;
+        var sc=(ss[i]||"").trim();
         var m=c.match(/^(.*)（(.+)）\s*$/);
-        if(m) addChild(m[1].trim(), m[2].trim()); else addChild(c, "");
+        if(m) addChild(m[1].trim(), m[2].trim(), sc); else addChild(c, "", sc);
       });
       if(childCount()===0) addChild();
       refreshChildUI();
@@ -291,25 +296,26 @@ function init(){
 }
 
 /* ===== 送信 ===== */
-function gatherKids(){
-  var kids=[];
+function gatherRows(){
+  var rows=[];
   document.querySelectorAll("#children .childrow").forEach(function(r){
-    var nm=r.querySelector(".cname").value.trim(), gr=r.querySelector(".cgrade").value;
-    if(nm) kids.push(nm + (gr ? "（"+gr+"）" : ""));
+    var nm=r.querySelector(".cname").value.trim();
+    var gr=r.querySelector(".cgrade").value;
+    var sc=r.querySelector(".cschool").value.trim();
+    if(nm) rows.push({ label: nm + (gr ? "（"+gr+"）" : ""), school: sc });
   });
-  return kids;
+  return rows;
 }
 function submit(){
-  var kids = gatherKids();
+  var rows = gatherRows();
   var gu=document.getElementById("guardian").value.trim();
   var ar=document.getElementById("area").value.trim();
-  var sc=document.getElementById("school").value.trim();
   var ph=document.getElementById("phone").value.trim();
   var en=document.getElementById("emgName").value.trim();
   var ep=document.getElementById("emgPhone").value.trim();
   var sel = Object.keys(selected);
 
-  if(kids.length===0){ alert("お子さまのお名前を1名以上ご入力ください"); return; }
+  if(rows.length===0){ alert("お子さまのお名前を1名以上ご入力ください"); return; }
   if(!gu||!ar||!ph){ alert("保護者のお名前・お住まいの市区町村・お電話番号をご入力ください"); return; }
   if(!en||!ep){ alert("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
   if(sel.length===0){ alert("参加希望日を1つ以上お選びください"); return; }
@@ -326,15 +332,17 @@ function submit(){
       alert("申し訳ありません、ご選択中の日程が満席になりました。\n空き状況を更新しましたのでご確認ください。");
       return;
     }
-    doSend(kids, gu, ar, sc, ph, en, ep, Object.keys(selected), b);
+    doSend(rows, gu, ar, ph, en, ep, Object.keys(selected), b);
   });
 }
-function doSend(kids,gu,ar,sc,ph,en,ep,sel,b){
+function doSend(rows,gu,ar,ph,en,ep,sel,b){
   var pl = {
     timestamp:new Date().toISOString(), userId:profile.userId, displayName:profile.displayName,
-    guardian:gu, area:ar, school:sc, phone:ph,
+    guardian:gu, area:ar, phone:ph,
     emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
-    children:kids.join(" / "), childCount:kids.length,
+    children: rows.map(function(r){return r.label;}).join(" / "),
+    schools:  rows.map(function(r){return r.school;}).join(" / "),
+    childCount: rows.length,
     dates:sel.join(" / "), meet:true,
     photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG", agree:true
   };
