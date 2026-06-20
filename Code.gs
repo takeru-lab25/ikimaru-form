@@ -197,7 +197,9 @@ function backfillEventSheets() {
   for (var i = 1; i < v.length; i++) {
     var lab = String(v[i][12] || "").trim();      // M列＝参加希望日（記録用ラベル）
     if (!lab) continue;
-    (byLabel[lab] = byLabel[lab] || []).push(v[i].slice(0, ENTRY_HEADER.length));
+    var row = v[i].slice(0, ENTRY_HEADER.length);
+    while (row.length < ENTRY_HEADER.length) row.push("");   // 列数を17に揃える
+    (byLabel[lab] = byLabel[lab] || []).push(row);
   }
   Object.keys(byLabel).forEach(function(lab){
     var s = eventSheet_(lab);
