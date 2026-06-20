@@ -5,8 +5,10 @@
  * doPost : 定員チェック（門番）のうえ「申込ログ」に記録。複数日は日付ごとに1行で記録。新規申込はメール通知。
  *
  * 必要シート（すべて同じスプレッドシート内）：
- *  「申込ログ」… 自動作成
- *  「日程」  … A:グループ B:日程(表示) C:記録用ラベル D:定員 E:受付(ON/OFF) F:参加費 G:場所 H:補足 I:残りわずか(残り◯名以下)  ※1行目は見出し
+ *  「日程」   … A:グループ B:日程(表示) C:記録用ラベル D:定員 E:受付 F:参加費 G:場所 H:補足 I:残りわずか  ※1行目は見出し
+ *  「申込ログ」… 全体台帳（自動作成・定員管理と自動入力に使用）
+ *  ＋ 回ごとに「記録用ラベル」と同名のシート（例：260712 海あそび）にも自動で振り分け記録（当日名簿用・自動作成）
+ *  既存の申込を日付別シートへ反映するには backfillEventSheets() を1回だけ実行。
  */
 
 var SHEET_LOG  = "申込ログ";
@@ -74,23 +76,24 @@ function doPost(e) {
     if (accepted.length === 0 && waited.length === 0) return json_({ ok:false, full:true });
 
     var log = getLog_(), now = new Date();
-    accepted.forEach(function(lab){ writeRow_(log, now, d, need, lab, "確定"); });
-    waited.forEach(function(lab){ writeRow_(log, now, d, need, lab, "キャンセル待ち"); });
+    // 全体台帳（申込ログ）と 日付別シート の両方へ1行ずつ記録
+    accepted.forEach(function(lab){ var row = buildRow_(now, d, need, lab, "確定"); log.appendRow(row); eventSheet_(lab).appendRow(row); });
+    waited.forEach(function(lab){ var row = buildRow_(now, d, need, lab, "キャンセル待ち"); log.appendRow(row); eventSheet_(lab).appendRow(row); });
 
     notifyNewEntry_(d, accepted, waited, need);                    // ★ 新規申込メール通知
     return json_({ ok:true, accepted:accepted, waitlist:waited });
   } catch (err) { return json_({ ok:false, error:String(err) }); }
 }
 
-// 1日付＝1行で記録（状態＝確定／キャンセル待ち）
-function writeRow_(log, now, d, need, lab, status) {
-  log.appendRow([
+// 1日付＝1行（状態＝確定／キャンセル待ち）の配列を作る
+function buildRow_(now, d, need, lab, status) {
+  return [
     now, d.userId || "", d.displayName || "", d.guardian || "",
     d.area || "", d.schools || "", d.phone || "",
     d.emgName || "", d.emgRel || "", d.emgPhone || "",
     d.children || "", need, lab, status, d.health || "",
     d.photo || "", d.agree ? "同意" : ""
-  ]);
+  ];
 }
 
 function splitList_(s) {
@@ -154,17 +157,53 @@ function countByLabel_() {
   return counts;
 }
 
-function getLog_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var s = ss.getSheetByName(SHEET_LOG) || ss.insertSheet(SHEET_LOG);
-  var header = ["受付日時","LINEユーザーID","LINE表示名","保護者氏名","市区町村","園・学校",
-    "電話","緊急連絡先氏名","続柄","緊急連絡先電話","お子さま","人数","参加希望日","状態","連絡事項","写真掲載","同意"];
-  var cur = s.getLastRow() >= 1 ? s.getRange(1, 1, 1, header.length).getValues()[0] : [];
-  var same = cur.length === header.length && header.every(function(h, i){ return cur[i] === h; });
-  if (!same) s.getRange(1, 1, 1, header.length).setValues([header]);
+var ENTRY_HEADER = ["受付日時","LINEユーザーID","LINE表示名","保護者氏名","市区町村","園・学校",
+  "電話","緊急連絡先氏名","続柄","緊急連絡先電話","お子さま","人数","参加希望日","状態","連絡事項","写真掲載","同意"];
+
+// 申込シート（見出し＋受付日時の表記）を整える共通処理
+function ensureEntrySheet_(s) {
+  var cur = s.getLastRow() >= 1 ? s.getRange(1, 1, 1, ENTRY_HEADER.length).getValues()[0] : [];
+  var same = cur.length === ENTRY_HEADER.length && ENTRY_HEADER.every(function(h, i){ return cur[i] === h; });
+  if (!same) s.getRange(1, 1, 1, ENTRY_HEADER.length).setValues([ENTRY_HEADER]);
   // 受付日時（A列）を「6月20日（木） 11:22」表記に統一（実データはDateのまま＝並べ替え可）
   s.getRange(2, 1, Math.max(s.getMaxRows() - 1, 1), 1).setNumberFormat('m"月"d"日（"aaa"） "hh:mm');
   return s;
+}
+
+function getLog_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  return ensureEntrySheet_(ss.getSheetByName(SHEET_LOG) || ss.insertSheet(SHEET_LOG));
+}
+
+// 回（記録用ラベル）ごとの当日名簿シート
+function eventSheet_(label) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var name = sheetName_(label);
+  return ensureEntrySheet_(ss.getSheetByName(name) || ss.insertSheet(name));
+}
+
+// シート名に使えない文字を除去（/ \ ? * [ ] :）
+function sheetName_(label) {
+  return (String(label).replace(/[\/\\\?\*\[\]\:]/g, "-").trim().slice(0, 90)) || "申込";
+}
+
+/* ★1回だけ実行：既存の「申込ログ」を日付別シートへ反映（重複しないよう各シートを作り直す。何度実行してもOK） */
+function backfillEventSheets() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var log = ss.getSheetByName(SHEET_LOG);
+  if (!log || log.getLastRow() < 2) return;
+  var v = log.getDataRange().getValues();
+  var byLabel = {};
+  for (var i = 1; i < v.length; i++) {
+    var lab = String(v[i][12] || "").trim();      // M列＝参加希望日（記録用ラベル）
+    if (!lab) continue;
+    (byLabel[lab] = byLabel[lab] || []).push(v[i].slice(0, ENTRY_HEADER.length));
+  }
+  Object.keys(byLabel).forEach(function(lab){
+    var s = eventSheet_(lab);
+    if (s.getLastRow() > 1) s.getRange(2, 1, s.getLastRow() - 1, ENTRY_HEADER.length).clearContent();
+    s.getRange(2, 1, byLabel[lab].length, ENTRY_HEADER.length).setValues(byLabel[lab]);
+  });
 }
 
 function pushConfirm_(userId, d, accepted) {
