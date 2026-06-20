@@ -55,6 +55,16 @@ input::placeholder{color:#b6c2cb;}
 .datecard.full .txt{color:var(--muted);}
 .datecard.full .tick{display:none;}
 .datecard .state.s-full{background:#eaeef0;color:#8a98a2;}
+.datecard.full{cursor:pointer;}
+.datecard.wl{background:#fff7ec;border-color:#e0902f;opacity:1;}
+.datecard.wl .txt{color:var(--ink);}
+.datecard .state.wl{background:#fbe6cb;color:#b56a12;}
+textarea{width:100%;min-height:62px;padding:11px 14px;font-size:16px;border:1.5px solid var(--line);border-radius:10px;background:#fcfdfe;color:var(--ink);font-family:inherit;resize:vertical;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;}
+textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,141,156,.13);background:#fff;}
+textarea::placeholder{color:#b6c2cb;}
+.opt{color:var(--muted);font-weight:700;margin-left:3px;font-size:11px;}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(18px);background:#2b3a42;color:#fff;font-size:14px;font-weight:600;padding:13px 20px;border-radius:12px;box-shadow:0 10px 32px rgba(0,0,0,.24);z-index:9999;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:86%;text-align:center;line-height:1.65;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .dgroup{font-size:13.5px;font-weight:800;color:var(--teal-d);margin:4px 0 9px;}
 .dgroup:not(:first-child){margin-top:16px;border-top:1px solid var(--line);padding-top:15px;}
 .dmsg{font-size:13px;color:var(--ink2);font-weight:600;padding:6px 2px;line-height:1.7;}
@@ -97,6 +107,8 @@ input::placeholder{color:#b6c2cb;}
       <p class="sec-d">「お子さまを追加」から、最大4名まで登録できます。</p>
       <div id="children"></div>
       <button type="button" class="addchild" id="addChild">＋ お子さまを追加（最大4名）</button>
+      <label class="f" style="margin-top:15px">そのほか、伝えておきたいこと <span class="opt">任意</span></label>
+      <input type="text" id="health" placeholder="あれば自由にご記入ください">
     </div>
 
     <div class="card">
@@ -207,6 +219,7 @@ function loadProfile(){
     if(!d || !d.found) return;
     setVal("guardian",d.guardian); setVal("area",d.area); setVal("phone",d.phone);
     setVal("emgName",d.emgName); setVal("emgRel",d.emgRel); setVal("emgPhone",d.emgPhone);
+    setVal("health",d.health);
     if(d.children){
       var cs = String(d.children).split(" / ");
       var ss = String(d.schools||"").split(" / ");
@@ -248,7 +261,7 @@ function renderDates(events){
   }
   Object.keys(selected).forEach(function(v){
     var ev = events.filter(function(e){return e.value===v;})[0];
-    if(!ev || ev.status==="full") delete selected[v];
+    if(!ev) delete selected[v];   // 日程自体が消えた場合のみ解除（満席はキャンセル待ちとして保持）
   });
   var curGroup = null;
   events.forEach(function(ev){
@@ -257,25 +270,35 @@ function renderDates(events){
       var h = document.createElement("div"); h.className = "dgroup"; h.textContent = ev.group;
       box.appendChild(h);
     }
+    var full = (ev.status==="full"), isSel = !!selected[ev.value];
     var d = document.createElement("div");
-    d.className = "datecard" + (ev.status==="full" ? " full" : "") + (selected[ev.value] ? " sel" : "");
+    d.className = "datecard" + (full ? " full" : "") + (isSel ? (full ? " wl" : " sel") : "");
     d.dataset.value = ev.value;
     var meta = [ev.place, ev.fee, ev.note].filter(function(x){return x;}).join("　・　");
-    var state = ev.status==="full" ? '<span class="state s-full">満席</span>'
-              : (ev.low ? '<span class="state low">残りわずか</span>' : '');
+    var state;
+    if (full) state = isSel ? '<span class="state wl">キャンセル待ち</span>' : '<span class="state s-full">満席（キャンセル待ち可）</span>';
+    else state = ev.low ? '<span class="state low">残りわずか</span>' : '';
     d.innerHTML = '<div class="tick">&#10003;</div><div class="cbody"><div class="txt">'+ev.name+'</div>'+(meta?'<div class="meta">'+meta+'</div>':'')+'</div>'+state;
-    if (ev.status!=="full"){
-      d.addEventListener("click",function(){
-        if(selected[ev.value]){ delete selected[ev.value]; d.classList.remove("sel"); }
-        else { selected[ev.value]=true; d.classList.add("sel"); }
-      });
-    }
+    d.addEventListener("click",function(){
+      if(selected[ev.value]) delete selected[ev.value]; else selected[ev.value]=true;
+      renderDates(events);
+    });
     box.appendChild(d);
   });
 }
 function loadDates(){
   document.getElementById("dates").innerHTML = '<div class="dmsg">日程を読み込み中…</div>';
   fetchSchedule(renderDates);
+}
+
+/* ===== 通知トースト（標準alertの代わり：ドメイン名を出さない）===== */
+var _toastTimer=null;
+function toast(msg){
+  var t=document.getElementById("toast");
+  if(!t){ t=document.createElement("div"); t.id="toast"; t.className="toast"; document.body.appendChild(t); }
+  t.textContent=msg; void t.offsetWidth; t.classList.add("show");
+  if(_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(function(){ t.classList.remove("show"); }, 2800);
 }
 
 /* ===== 同意 ===== */
@@ -317,43 +340,55 @@ function submit(){
   var ep=document.getElementById("emgPhone").value.trim();
   var sel = Object.keys(selected);
 
-  if(rows.length===0){ alert("お子さまのお名前を1名以上ご入力ください"); return; }
-  if(!gu||!ar||!ph){ alert("保護者のお名前・お住まいの市区町村・お電話番号をご入力ください"); return; }
-  if(!en||!ep){ alert("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
-  if(sel.length===0){ alert("参加希望日を1つ以上お選びください"); return; }
-  if(!document.getElementById("agreeChk").classList.contains("on")){ alert("規約への同意をお願いします"); return; }
+  if(rows.length===0){ toast("お子さまのお名前を1名以上ご入力ください"); return; }
+  if(!gu||!ar||!ph){ toast("保護者のお名前・市区町村・お電話番号をご入力ください"); return; }
+  if(!en||!ep){ toast("緊急連絡先（お名前・電話番号）をご入力ください"); return; }
+  if(sel.length===0){ toast("参加希望日を1つ以上お選びください"); return; }
+  if(!document.getElementById("agreeChk").classList.contains("on")){ toast("規約への同意をお願いします"); return; }
 
   var b=document.getElementById("send"); b.disabled=true; b.textContent="空き状況を確認中…";
   fetchSchedule(function(events){
-    if(events===null){ b.disabled=false; b.textContent="申込内容を送信する"; alert("通信に失敗しました。もう一度お試しください。"); return; }
+    if(events===null){ b.disabled=false; b.textContent="申込内容を送信する"; toast("通信に失敗しました。もう一度お試しください"); return; }
     renderDates(events);
-    var stillFull = sel.filter(function(v){ var ev=events.filter(function(e){return e.value===v;})[0]; return !ev || ev.status==="full"; });
-    if(stillFull.length){
+    var confirmD=[], wlD=[];
+    Object.keys(selected).forEach(function(v){
+      var ev=events.filter(function(e){return e.value===v;})[0];
+      if(!ev) return;
+      if(ev.status==="full") wlD.push(v); else confirmD.push(v);
+    });
+    if(confirmD.length===0 && wlD.length===0){
       b.disabled=false; b.textContent="申込内容を送信する";
-      alert("申し訳ありません、ご選択中の日程が満席になりました。\n空き状況を更新しましたのでご確認ください。");
-      return;
+      toast("選択した日程の受付状況をご確認ください"); return;
     }
-    doSend(rows, gu, ar, ph, en, ep, Object.keys(selected), b);
+    doSend(rows, gu, ar, ph, en, ep, confirmD, wlD, b);
   });
 }
-function doSend(rows,gu,ar,ph,en,ep,sel,b){
+function doSend(rows,gu,ar,ph,en,ep,confirmD,wlD,b){
   var pl = {
     timestamp:new Date().toISOString(), userId:profile.userId, displayName:profile.displayName,
     guardian:gu, area:ar, phone:ph,
     emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
+    health: document.getElementById("health").value.trim(),
     children: rows.map(function(r){return r.label;}).join(" / "),
     schools:  rows.map(function(r){return r.school;}).join(" / "),
     childCount: rows.length,
-    dates:sel.join(" / "),
+    dates: confirmD.join(" / "),
+    waitlist: wlD.join(" / "),
     photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG", agree:true
   };
   b.textContent="送信中…";
   fetch(GAS_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(pl)}).then(function(){
+    var msg = "当日お会いできるのを楽しみにしております。";
+    if(wlD.length){
+      msg = (confirmD.length ? "ご希望の一部は満席のため、キャンセル待ちで承りました。" : "満席のため、キャンセル待ちで承りました。")
+          + "空きが出次第、公式LINEよりご連絡します。";
+    }
+    document.getElementById("doneMsg").textContent = msg;
     document.getElementById("app").style.display="none";
     document.getElementById("done").style.display="block";
     window.scrollTo(0,0);
     setTimeout(function(){ try{ if(liff&&liff.isInClient()) liff.closeWindow(); }catch(e){} },2800);
-  }).catch(function(){ b.disabled=false; b.textContent="申込内容を送信する"; alert("送信に失敗しました。もう一度お試しください。"); });
+  }).catch(function(){ b.disabled=false; b.textContent="申込内容を送信する"; toast("送信に失敗しました。もう一度お試しください"); });
 }
 
 init();
