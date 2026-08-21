@@ -143,7 +143,7 @@ textarea::placeholder{color:#b6c2cb;}
 
     <div class="card">
       <div class="sec-h"><span class="n">04</span><h2>参加希望日</h2></div>
-      <p class="sec-d">参加希望日をすべてお選びください（複数選択できます）。</p>
+      <p class="sec-d" id="datesLead">参加希望日をすべてお選びください（複数選択できます）。</p>
       <div id="dates"><div class="dmsg">日程を読み込み中…</div></div>
     </div>
 
@@ -265,6 +265,11 @@ function fetchSchedule(cb){
 }
 function renderDates(events){
   var box = document.getElementById("dates");
+  // 開催が1回だけの回では「すべてお選びください（複数選択）」が実態と合わないので文言を変える
+  var lead = document.getElementById("datesLead");
+  if (lead && events) lead.textContent = (events.length > 1)
+    ? "参加希望日をすべてお選びください（複数選択できます）。"
+    : "参加希望日をお選びください。";
   box.innerHTML = "";
   if (events === null){
     box.innerHTML = '<div class="dmsg">日程の読み込みに失敗しました。<span class="retry" id="reDates">再読み込み</span></div>';
