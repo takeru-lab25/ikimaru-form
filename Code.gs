@@ -29,7 +29,9 @@ function doGet(e) {
 
 function buildSchedule_() {
   var counts = countByLabel_();
-  var events = readSched_().map(function(r) {
+  // 受付=OFF の回はフォームに出さない。出すと「満席（キャンセル待ち可）」として押せてしまい、
+  // 公開前・終了後の回にキャンセル待ちが入ってしまう（2026-08-21 浅香指摘）
+  var events = readSched_().filter(function(r){ return r.open; }).map(function(r) {
     var remaining = r.cap - (counts[r.label] || 0);
     var full = (!r.open) || remaining <= 0;
     var low  = (!full) && r.lowThresh > 0 && remaining <= r.lowThresh; // 回ごとのしきい値
@@ -71,7 +73,11 @@ function doPost(e) {
       else waited.push(lab);
     });
     // フロントで満席と分かったうえで選んだ分はキャンセル待ち（定員に数えない）
-    splitList_(d.waitlist).forEach(function(lab){ if (waited.indexOf(lab) < 0 && accepted.indexOf(lab) < 0) waited.push(lab); });
+    splitList_(d.waitlist).forEach(function(lab){
+      var r = sched[lab];
+      if (!r || !r.open) return;                       // 受付OFF＝キャンセル待ちも受け取らない
+      if (waited.indexOf(lab) < 0 && accepted.indexOf(lab) < 0) waited.push(lab);
+    });
 
     if (accepted.length === 0 && waited.length === 0) return json_({ ok:false, full:true });
 
