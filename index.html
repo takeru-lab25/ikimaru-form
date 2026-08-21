@@ -77,6 +77,15 @@ textarea::placeholder{color:#b6c2cb;}
 .check .t{font-size:12.5px;line-height:1.65;font-weight:600;}
 .check .t small{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:3px;line-height:1.55;}
 .check a{color:var(--teal-d);font-weight:800;text-decoration:underline;}
+.plead{font-size:13px;font-weight:800;margin:0 0 4px;}
+.pick{display:flex;align-items:flex-start;gap:11px;border:1.5px solid var(--line);border-radius:10px;padding:12px 13px;cursor:pointer;background:#fcfdfe;margin-top:8px;}
+.pick .dot{width:22px;height:22px;border-radius:50%;border:2px solid #c5d2d9;flex:0 0 auto;display:flex;align-items:center;justify-content:center;transition:all .14s;}
+.pick.on{border-color:var(--teal);background:var(--aqua);}
+.pick.on .dot{border-color:var(--teal);}
+.pick.on .dot::after{content:"";width:11px;height:11px;border-radius:50%;background:var(--teal);}
+.pick .t{font-size:12.5px;line-height:1.65;font-weight:600;}
+.pick .t small{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:3px;line-height:1.55;}
+.pnote{font-size:11px;color:var(--muted);font-weight:600;line-height:1.65;margin:10px 0 0;}
 .foot{padding:6px 16px 34px;}
 .send{width:100%;height:54px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;font-size:16px;font-weight:800;letter-spacing:.02em;box-shadow:0 6px 16px rgba(14,141,156,.26);transition:transform .1s,opacity .2s;}
 .send:active{transform:scale(.99);}
@@ -140,8 +149,15 @@ textarea::placeholder{color:#b6c2cb;}
 
     <div class="card">
       <div class="sec-h"><span class="n">05</span><h2>ご確認・同意事項</h2></div>
-      <label class="check on" id="photoTog"><span class="box"></span><span class="t">活動中の写真・動画の掲載に同意します（撮影許可）<small>活動記録・広報（Instagram／ウェブサイト等）に使用します。希望されない場合はチェックを外してください。</small></span></label>
-      <div style="height:10px"></div>
+      <p class="plead">活動中の写真・動画の掲載について</p>
+      <p class="sec-d" style="margin-bottom:0">スタッフが撮影した写真を、活動記録や広報（Instagram・ウェブサイト・note等）に使わせていただくことがあります。</p>
+      <div id="photoPick">
+        <label class="pick on" data-v="OK"><span class="dot"></span><span class="t">掲載してよい<small>お子さまの様子がわかる写真として使わせていただきます。</small></span></label>
+        <label class="pick" data-v="顔なしOK"><span class="dot"></span><span class="t">顔がはっきり写らないものなら掲載してよい<small>後ろ姿や、遠くから撮った写真だけを使います。</small></span></label>
+        <label class="pick" data-v="NG"><span class="dot"></span><span class="t">掲載しない<small>記録として保管しますが、外部には出しません。</small></span></label>
+      </div>
+      <p class="pnote">いずれの場合も、お子さまのお名前は掲載しません。掲載後であっても、公式LINEよりご連絡いただければ取り下げます。</p>
+      <div style="height:14px"></div>
       <label class="check" id="agreeChk"><span class="box"></span><span class="t">利用規約・参加同意（免責）・キャンセル／中止ポリシー・個人情報の取扱いに同意します。　<a href="./terms.html" target="_blank">規約を読む</a></span></label>
     </div>
   </main>
@@ -303,10 +319,23 @@ function toast(msg){
 
 /* ===== 同意 ===== */
 function bindCheck(id){ var e=document.getElementById(id); e.addEventListener("click",function(){ e.classList.toggle("on"); }); }
+function bindPhotoPick(){
+  var box=document.getElementById("photoPick");
+  box.querySelectorAll(".pick").forEach(function(el){
+    el.addEventListener("click",function(){
+      box.querySelectorAll(".pick").forEach(function(x){ x.classList.remove("on"); });
+      el.classList.add("on");
+    });
+  });
+}
+function photoValue(){
+  var on=document.querySelector("#photoPick .pick.on");
+  return on ? on.getAttribute("data-v") : "OK";
+}
 
 function init(){
   addChild(); loadDates();
-  document.getElementById("photoTog").addEventListener("click",function(){ this.classList.toggle("on"); });
+  bindPhotoPick();
   bindCheck("agreeChk");
   document.getElementById("addChild").addEventListener("click",function(){ addChild(); });
   document.getElementById("send").addEventListener("click",submit);
@@ -374,7 +403,7 @@ function doSend(rows,gu,ar,ph,en,ep,confirmD,wlD,b){
     childCount: rows.length,
     dates: confirmD.join(" / "),
     waitlist: wlD.join(" / "),
-    photo: document.getElementById("photoTog").classList.contains("on") ? "OK" : "NG", agree:true
+    photo: photoValue(), agree:true
   };
   b.textContent="送信中…";
   fetch(GAS_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(pl)}).then(function(){
