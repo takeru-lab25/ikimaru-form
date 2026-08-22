@@ -94,7 +94,7 @@ textarea::placeholder{color:#b6c2cb;}
 .done{display:none;text-align:center;padding:78px 28px;}
 .done .mk{width:72px;height:72px;border-radius:50%;background:var(--aqua);margin:0 auto 22px;display:flex;align-items:center;justify-content:center;}
 .done h1{font-size:20px;margin:0 0 10px;font-weight:800;}
-.done p{font-size:13.5px;color:var(--ink2);line-height:1.85;}
+.done p{font-size:13.5px;color:var(--ink2);line-height:1.85;white-space:pre-line;}
 </style>
 </head>
 <body>
@@ -173,7 +173,9 @@ textarea::placeholder{color:#b6c2cb;}
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.2 4.2L19 7" stroke="#0e8d9c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <h1>お申込みを受け付けました</h1>
-  <p id="doneMsg">当日お会いできるのを楽しみにしております。</p>
+  <p id="doneMsg">大変お手数ですが、申込み情報との照合のためLINEにてスタンプまたは申込み完了の旨メッセージいただけますと幸いです。
+
+どうぞよろしくお願いいたします。</p>
 </div>
 
 </div>
@@ -412,16 +414,17 @@ function doSend(rows,gu,ar,ph,en,ep,confirmD,wlD,b){
   };
   b.textContent="送信中…";
   fetch(GAS_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(pl)}).then(function(){
-    var msg = "当日お会いできるのを楽しみにしております。";
+    var ask = "大変お手数ですが、申込み情報との照合のためLINEにてスタンプまたは申込み完了の旨メッセージいただけますと幸いです。\n\nどうぞよろしくお願いいたします。";
+    var msg = ask;
     if(wlD.length){
       msg = (confirmD.length ? "ご希望の一部は満席のため、キャンセル待ちで承りました。" : "満席のため、キャンセル待ちで承りました。")
-          + "空きが出次第、公式LINEよりご連絡します。";
+          + "空きが出次第、公式LINEよりご連絡します。\n\n" + ask;
     }
     document.getElementById("doneMsg").textContent = msg;
     document.getElementById("app").style.display="none";
     document.getElementById("done").style.display="block";
     window.scrollTo(0,0);
-    setTimeout(function(){ try{ if(liff&&liff.isInClient()) liff.closeWindow(); }catch(e){} },2800);
+    setTimeout(function(){ try{ if(liff&&liff.isInClient()) liff.closeWindow(); }catch(e){} },7000);
   }).catch(function(){ b.disabled=false; b.textContent="申込内容を送信する"; toast("送信に失敗しました。もう一度お試しください"); });
 }
 
