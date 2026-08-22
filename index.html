@@ -163,6 +163,12 @@ textarea::placeholder{color:#b6c2cb;}
   </main>
 
   <div class="foot">
+    <div id="lineNotice" style="display:none;background:#fff7e8;border:1px solid #efd9a6;border-radius:11px;padding:12px 13px;margin-bottom:11px;font-size:13px;line-height:1.65;color:#7a5a1e">
+      <b>LINEアプリから開くと確実です</b><br>
+      いまLINE以外で開かれているため、当日のご連絡をLINEでお届けできない場合があります。<br>
+      <a href="https://liff.line.me/2010388432-T1i0hg4p" style="color:#0e8d9c;font-weight:700">▶ LINEアプリで開き直す</a><br>
+      <span style="font-size:12px;opacity:.8">※このまま送信いただいても、お申込みは受け付けられます。</span>
+    </div>
     <button class="send" id="send">申込内容を送信する</button>
     <p class="fine">ご不明な点は公式LINEまでお問い合わせください。</p>
   </div>
@@ -187,6 +193,7 @@ var GAS_URL  = "https://script.google.com/macros/s/AKfycbxhdv3tqF0KVpxERk8PY9Fip
 var GRADES = ["年中","年長","小1","小2","小3","小4","小5","小6","その他"];
 var MAX_CHILD = 4;
 var profile = { userId:"", displayName:"" };
+var liffStatus = "pending";
 var selected = {};   // value -> true（選択中の日程）
 var cbN = 0;
 
@@ -346,14 +353,34 @@ function init(){
   bindCheck("agreeChk");
   document.getElementById("addChild").addEventListener("click",function(){ addChild(); });
   document.getElementById("send").addEventListener("click",submit);
-  if (typeof liff==="undefined" || LIFF_ID.indexOf("PUT_")===0) return;
+
+  /* --- LIFF: IDが取れるまで送信を待たせる。ただし最大5秒で必ず解放し、申込自体は絶対に止めない --- */
+  var sendBtn = document.getElementById("send");
+  var settled = false;
+  function settleLiff(status){
+    if(settled) return;
+    settled = true;
+    liffStatus = status;
+    sendBtn.disabled = false;
+    sendBtn.textContent = "申込内容を送信する";
+    if(status !== "ok"){
+      var n = document.getElementById("lineNotice");
+      if(n) n.style.display = "block";
+    }
+  }
+  sendBtn.disabled = true;
+  sendBtn.textContent = "LINE情報を確認中…";
+  setTimeout(function(){ settleLiff("timeout"); }, 5000);
+
+  if (typeof liff==="undefined" || LIFF_ID.indexOf("PUT_")===0){ settleLiff("no-sdk"); return; }
   liff.init({liffId:LIFF_ID}).then(function(){
     if(!liff.isLoggedIn()){ liff.login(); return; }
     return liff.getProfile().then(function(p){
       profile.userId=p.userId; profile.displayName=p.displayName||"";
       loadProfile();
+      settleLiff("ok");
     });
-  }).catch(function(e){});
+  }).catch(function(e){ settleLiff("init-error:" + ((e && e.message) ? e.message : "unknown")); });
 }
 
 /* ===== 送信 ===== */
@@ -401,7 +428,7 @@ function submit(){
 }
 function doSend(rows,gu,ar,ph,en,ep,confirmD,wlD,b){
   var pl = {
-    timestamp:new Date().toISOString(), userId:profile.userId, displayName:profile.displayName,
+    timestamp:new Date().toISOString(), userId:profile.userId, displayName:profile.displayName, liffStatus:liffStatus,
     guardian:gu, area:ar, phone:ph,
     emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
     health: document.getElementById("health").value.trim(),
