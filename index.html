@@ -234,7 +234,7 @@ function fetchProfile(uid, cb){
   window[name] = function(data){ done=true; try{ cb(data); }finally{ try{delete window[name];}catch(e){window[name]=null;} } };
   var s = document.createElement("script");
   s.onerror = function(){ if(!done){ cb(null); try{delete window[name];}catch(e){} } };
-  s.src = GAS_URL + "?action=profile&userId="+encodeURIComponent(uid)+"&callback="+name+"&_="+Date.now();
+  s.src = GAS_URL + "?action=profile&idToken="+encodeURIComponent((window.liff&&liff.getIDToken&&liff.getIDToken())||"")+"&callback="+name+"&_="+Date.now();
   document.body.appendChild(s);
   setTimeout(function(){ if(!done){ try{cb(null);}catch(e){} } }, 9000);
 }
