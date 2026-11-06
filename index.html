@@ -234,7 +234,7 @@ function fetchProfile(uid, cb){
   window[name] = function(data){ done=true; try{ cb(data); }finally{ try{delete window[name];}catch(e){window[name]=null;} } };
   var s = document.createElement("script");
   s.onerror = function(){ if(!done){ cb(null); try{delete window[name];}catch(e){} } };
-  s.src = GAS_URL + "?action=profile&idToken="+encodeURIComponent((window.liff&&liff.getIDToken&&liff.getIDToken())||"")+"&callback="+name+"&_="+Date.now();
+  s.src = GAS_URL + "?action=profile&accessToken="+encodeURIComponent((window.liff&&liff.getAccessToken&&liff.getAccessToken())||"")+"&callback="+name+"&_="+Date.now();
   document.body.appendChild(s);
   setTimeout(function(){ if(!done){ try{cb(null);}catch(e){} } }, 9000);
 }
@@ -428,7 +428,7 @@ function submit(){
 }
 function doSend(rows,gu,ar,ph,en,ep,confirmD,wlD,b){
   var pl = {
-    timestamp:new Date().toISOString(), userId:profile.userId, displayName:profile.displayName, liffStatus:liffStatus,
+    timestamp:new Date().toISOString(), accessToken:(window.liff&&liff.getAccessToken&&liff.getAccessToken())||"", userId:profile.userId, displayName:profile.displayName, liffStatus:liffStatus,
     guardian:gu, area:ar, phone:ph,
     emgName:en, emgRel:document.getElementById("emgRel").value.trim(), emgPhone:ep,
     health: document.getElementById("health").value.trim(),
